@@ -47,12 +47,13 @@ export default ({ variables, env }) => {
 
   const errors = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
-  let badgeHeight = 20;
+  let badgeHeight = 10;
   if (variables?.GIT_BRANCH) badgeHeight += 10;
   if (variables?.BUILD_DATE_TIME) badgeHeight += 10;
   const hasEnvOrVersion = !!env || !!version;
   if (hasEnvOrVersion) badgeHeight += 10;
   if (DeviceInfo) badgeHeight += 10;
+  if (badgeHeight === 10) badgeHeight += 10;
 
   const {
     translateX,
