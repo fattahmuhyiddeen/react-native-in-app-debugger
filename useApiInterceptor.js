@@ -1,22 +1,23 @@
 // @ts-nocheck
-import { useEffect, useState } from 'react';
-import XHRInterceptor from 'react-native/Libraries/Network/XHRInterceptor.js';
+import { useEffect, useState } from "react";
+import { Platform } from "react-native";
+import XHRInterceptor from "react-native/Libraries/Network/XHRInterceptor.js";
 
 const filterNonBusinessRelatedAPI = true;
 const MAX_NUM_OF_API = 50;
 
 const now = () =>
-  new Date().toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
+  new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
   });
 
 const shouldExclude = (url, method) =>
-  ['HEAD'].includes(method) ||
-  url.includes('codepush') ||
-  url.includes('localhost') ||
-  url.includes('applicationinsights.azure.com');
+  ["HEAD"].includes(method) ||
+  url.includes("codepush") ||
+  url.includes("localhost") ||
+  url.includes("applicationinsights.azure.com");
 
 const parse = (data) => {
   try {
@@ -35,7 +36,10 @@ export default () => {
       datetime: now(),
     };
     setApis((v) =>
-      [{ request, id: Date.now().toString(36) + Math.random().toString(36) }, ...v].slice(0, MAX_NUM_OF_API),
+      [
+        { request, id: Date.now().toString(36) + Math.random().toString(36) },
+        ...v,
+      ].slice(0, MAX_NUM_OF_API)
     );
   };
 
@@ -46,7 +50,12 @@ export default () => {
       const oldData = [...v];
       for (let i = 0; i < oldData.length; i++) {
         const old = oldData[i];
-        if (old.response || old.request.url !== data.config.url || old.request.method !== data.config.method) continue;
+        if (
+          old.response ||
+          old.request.url !== data.config.url ||
+          old.request.method !== data.config.method
+        )
+          continue;
 
         oldData[i].response = {
           ...data,
@@ -87,27 +96,29 @@ export default () => {
       }
       const data = parse(_response);
 
-      xhr.addEventListener('load', function () {
-        try {
-          const reader = new FileReader();
-          reader.readAsText(xhr.response);
-          reader.onload = function () {
-            const response = JSON.parse(reader.result);
-            receiveResponse({
-              config: {
-                url,
-                method,
-              },
-              data: response,
-              status,
-            });
-          };
-        } catch (e) {
-          console.log(e);
-        }
-      });
+      if (Platform.OS === "ios") {
+        xhr.addEventListener("load", function () {
+          try {
+            const reader = new FileReader();
+            reader.readAsText(xhr.response);
+            reader.onload = function () {
+              const response = JSON.parse(reader.result);
+              receiveResponse({
+                config: {
+                  url,
+                  method,
+                },
+                data: response,
+                status,
+              });
+            };
+          } catch (e) {
+            console.log(e);
+          }
+        });
+      }
 
-      if (!data.blobId) {
+      if (Platform.OS === "ios" && !data.blobId) {
         receiveResponse({
           config: {
             url,
