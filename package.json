@@ -1,13 +1,16 @@
 {
   "name": "react-native-in-app-debugger",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "npm publish --access=public"
+    "deploy": "npm publish --access=public"
   },
-  "keywords": ["debugger"],
+  "devDependencies": {},
+  "keywords": [
+    "debugger"
+  ],
   "author": "Fattah Muhyiddeen <fattahmuhyiddeen@gmail.com>",
   "license": "MIT"
 }
