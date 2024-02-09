@@ -11,7 +11,7 @@ import {
 // import Clipboard from '@react-native-clipboard/clipboard';
 let Clipboard;
 try {
-  Clipboard = require("@react-native-clipboard/clipboard");
+  Clipboard = require("@react-native-clipboard/clipboard")?.default;
 } catch (error) {
   console.error("Error importing Clipboard:", error);
 }
