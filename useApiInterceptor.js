@@ -96,7 +96,7 @@ export default () => {
       }
       const data = parse(_response);
 
-      if (Platform.OS === "ios") {
+      if (Platform.OS !== "android") {
         xhr.addEventListener("load", function () {
           try {
             const reader = new FileReader();
@@ -118,7 +118,7 @@ export default () => {
         });
       }
 
-      if (Platform.OS === "ios" && !data.blobId) {
+      if (Platform.OS === "android" || !data.blobId) {
         receiveResponse({
           config: {
             url,
