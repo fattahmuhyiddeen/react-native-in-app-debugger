@@ -19,27 +19,36 @@ try {
 const MAX_URL_LENGTH = 100;
 
 const Row = ({ item }) => {
-  const [tab, setTab] = useState("response-body");
+  const tabs = [
+    { key: "Response Body" },
+    { key: "Request Body", hide: !item.request.data },
+    { key: "Request Body" },
+  ];
+  const [tab, setTab] = useState(tabs[0].key);
   const hasResponse = item.response;
-  const Tab = ({ value, label }) => {
-    const isSelected = value === tab;
+  const Tab = ({ label }) => {
+    const isSelected = label === tab;
     return (
       <TouchableOpacity
         activeOpacity={isSelected ? 1 : 0.7}
-        onPress={() => setTab(value)}
+        onPress={() => setTab(label)}
         style={[
           styles.selectionTab,
           { backgroundColor: isSelected ? "white" : undefined },
         ]}
       >
         <Text
-          style={{ color: isSelected ? "#000" : "#ffffff88", textAlign: "center" }}
+          style={{
+            color: isSelected ? "#000" : "#ffffff88",
+            textAlign: "center",
+          }}
         >
           {label}
         </Text>
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={styles.details}>
       {item.request.url.length > MAX_URL_LENGTH && (
@@ -49,24 +58,24 @@ const Row = ({ item }) => {
       )}
       <View>
         <View style={{ flexDirection: "row" }}>
-          <Tab value="response-body" label="Response Body" />
-          {!!item.request.data && (
-            <Tab value="request-body" label="Request Body" />
-          )}
-          <Tab value="request-header" label="Request Header" />
+          {tabs
+            .filter((t) => !t.hide)
+            .map((t) => (
+              <Tab key={t.key} label={t.key} />
+            ))}
         </View>
 
-        {tab === "response-body" && hasResponse && (
+        {tab === tabs[0].key && hasResponse && (
           <Text style={{ color: "white" }}>
             {JSON.stringify(item.response.data, undefined, 4)}
           </Text>
         )}
-        {tab === "request-body" && (
+        {tab === tabs[1].key && (
           <Text style={{ color: "white" }}>
             {JSON.stringify(item.request.data, undefined, 4)}
           </Text>
         )}
-        {tab === "request-header" && (
+        {tab === tabs[2].key && (
           <Text style={{ color: "white" }}>
             {JSON.stringify(item.request.headers, undefined, 4)}
           </Text>
