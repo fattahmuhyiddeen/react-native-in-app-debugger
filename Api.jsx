@@ -20,18 +20,19 @@ const MAX_URL_LENGTH = 100;
 
 const Row = ({ item }) => {
   const tabs = [
-    { key: "Response Body" },
-    { key: "Request Body", hide: !item.request.data },
-    { key: "Request Body" },
+    { value: "Response Body" },
+    { value: "Request Body", hide: !item.request.data },
+    { value: "Request Body" },
   ];
-  const [tab, setTab] = useState(tabs[0].key);
+  const [tab, setTab] = useState(tabs[0].value);
   const hasResponse = item.response;
-  const Tab = ({ label }) => {
-    const isSelected = label === tab;
+  const Tab = ({ value, hide }) => {
+    if(hide) return null;
+    const isSelected = value === tab;
     return (
       <TouchableOpacity
         activeOpacity={isSelected ? 1 : 0.7}
-        onPress={() => setTab(label)}
+        onPress={() => setTab(value)}
         style={[
           styles.selectionTab,
           { backgroundColor: isSelected ? "white" : undefined },
@@ -43,7 +44,7 @@ const Row = ({ item }) => {
             textAlign: "center",
           }}
         >
-          {label}
+          {value}
         </Text>
       </TouchableOpacity>
     );
@@ -58,24 +59,22 @@ const Row = ({ item }) => {
       )}
       <View>
         <View style={{ flexDirection: "row" }}>
-          {tabs
-            .filter((t) => !t.hide)
-            .map((t) => (
-              <Tab key={t.key} label={t.key} />
-            ))}
+          {tabs.map((t) => (
+            <Tab key={t.value} {...t} />
+          ))}
         </View>
 
-        {tab === tabs[0].key && hasResponse && (
+        {tab === tabs[0].value && hasResponse && (
           <Text style={{ color: "white" }}>
             {JSON.stringify(item.response.data, undefined, 4)}
           </Text>
         )}
-        {tab === tabs[1].key && (
+        {tab === tabs[1].value && (
           <Text style={{ color: "white" }}>
             {JSON.stringify(item.request.data, undefined, 4)}
           </Text>
         )}
-        {tab === tabs[2].key && (
+        {tab === tabs[2].value && (
           <Text style={{ color: "white" }}>
             {JSON.stringify(item.request.headers, undefined, 4)}
           </Text>
