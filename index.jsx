@@ -29,7 +29,7 @@ import useApiInterceptor from "./useApiInterceptor";
 
 const dimension = Dimensions.get("window");
 
-const version = DeviceInfo?.getReadableVersion() || "";
+const v = DeviceInfo?.getReadableVersion() || "";
 
 const Label = (props) => (
   <Text
@@ -40,7 +40,7 @@ const Label = (props) => (
   />
 );
 
-export default ({ variables, env }) => {
+export default ({ variables, env, version = v }) => {
   const { apis, clear } = useApiInterceptor();
 
   const [tab, setTab] = useState("api");

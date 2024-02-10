@@ -73,6 +73,7 @@ export default () => {
     XHRInterceptor.enableInterception();
     // console.log('API interceptor status', XHRInterceptor.isInterceptorEnabled());
     XHRInterceptor.setSendCallback((...obj) => {
+      obj[1].responseType = "text";
       const data = parse(obj[0]);
 
       const { _method: method, _url: url, _headers: headers } = obj[1];
@@ -89,45 +90,20 @@ export default () => {
     });
 
     XHRInterceptor.setResponseCallback((...obj) => {
-      const xhr = obj[5];
-      const { _method: method, _url: url, _response, status } = xhr;
+      const { _method: method, _url: url, _response, status } = obj[5];
       if (filterNonBusinessRelatedAPI) {
         if (shouldExclude(url, method)) return;
       }
       const data = parse(_response);
 
-      if (Platform.OS !== "android") {
-        xhr.addEventListener("load", function () {
-          try {
-            const reader = new FileReader();
-            reader.readAsText(xhr.response);
-            reader.onload = function () {
-              const response = JSON.parse(reader.result);
-              receiveResponse({
-                config: {
-                  url,
-                  method,
-                },
-                data: response,
-                status,
-              });
-            };
-          } catch (e) {
-            console.log(e);
-          }
-        });
-      }
-
-      if (Platform.OS === "android" || !data.blobId) {
-        receiveResponse({
-          config: {
-            url,
-            method,
-          },
-          data,
-          status,
-        });
-      }
+      receiveResponse({
+        config: {
+          url,
+          method,
+        },
+        data,
+        status,
+      });
     });
   }, []);
 
