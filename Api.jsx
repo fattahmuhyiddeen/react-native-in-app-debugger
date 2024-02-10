@@ -13,7 +13,7 @@ let Clipboard;
 try {
   Clipboard = require("@react-native-clipboard/clipboard")?.default;
 } catch (error) {
-  console.error("Error importing Clipboard:", error);
+  // console.error("Error importing Clipboard:", error);
 }
 
 const MAX_URL_LENGTH = 100;
@@ -33,7 +33,7 @@ const Row = ({ item }) => {
         ]}
       >
         <Text
-          style={{ color: isSelected ? "#000" : "#fff", textAlign: "center" }}
+          style={{ color: isSelected ? "#000" : "#ffffff88", textAlign: "center" }}
         >
           {label}
         </Text>
@@ -148,6 +148,13 @@ export default (props) => {
           </TouchableOpacity>
         )}
       </View>
+      {!filter &&
+        !!props.maxNumOfApiToStore &&
+        apis.length === props.maxNumOfApiToStore && (
+          <Text style={{ color: "#ffffff88", padding: 10 }}>
+            Capped to only latest {props.maxNumOfApiToStore} APIs
+          </Text>
+        )}
       <SectionList
         contentContainerStyle={{ padding: 5 }}
         keyExtractor={(i) => i.id}

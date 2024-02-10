@@ -1,10 +1,7 @@
-// @ts-nocheck
 import { useEffect, useState } from "react";
-import { Platform } from "react-native";
 import XHRInterceptor from "react-native/Libraries/Network/XHRInterceptor.js";
 
 const filterNonBusinessRelatedAPI = true;
-const MAX_NUM_OF_API = 50;
 
 const now = () =>
   new Date().toLocaleTimeString("en-US", {
@@ -27,7 +24,7 @@ const parse = (data) => {
   }
 };
 
-export default () => {
+export default (maxNumOfApiToStore) => {
   const [apis, setApis] = useState([]);
 
   const makeRequest = (data) => {
@@ -35,12 +32,14 @@ export default () => {
       ...data,
       datetime: now(),
     };
-    setApis((v) =>
-      [
+    setApis((v) => {
+      const newData = [
         { request, id: Date.now().toString(36) + Math.random().toString(36) },
         ...v,
-      ].slice(0, MAX_NUM_OF_API)
-    );
+      ];
+      if (maxNumOfApiToStore) newData.slice(0, maxNumOfApiToStore);
+      return newData;
+    });
   };
 
   const receiveResponse = (data) => {

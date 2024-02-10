@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, FlatList, TextInput } from 'react-native';
 
-export default ({ envs }) => {
+export default ({ variables }) => {
   const [filter, setFilter] = useState('');
 
   return (
@@ -15,13 +15,13 @@ export default ({ envs }) => {
       />
       <FlatList
         contentContainerStyle={{ padding: 5, paddingBottom: 20 }}
-        data={Object.keys(envs).filter(
-          (k) => !filter || envs[k].toLowerCase().includes(filter) || k.toLowerCase().includes(filter),
+        data={Object.keys(variables).filter(
+          (k) => !filter || variables[k].toLowerCase().includes(filter) || k.toLowerCase().includes(filter),
         )}
         keyExtractor={(i) => i}
         renderItem={({ item }) => (
           <Text selectable style={{ color: 'white', marginVertical: 10 }}>
-            {item + ' : ' + envs[item]}
+            {item + ' : ' + variables[item]}
           </Text>
         )}
       />

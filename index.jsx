@@ -19,7 +19,7 @@ let DeviceInfo;
 try {
   DeviceInfo = require("react-native-device-info");
 } catch (error) {
-  console.error("Error importing DeviceInfo:", error);
+  // console.error("Error importing DeviceInfo:", error);
 }
 
 import useAnimation from "./useAnimation";
@@ -40,8 +40,8 @@ const Label = (props) => (
   />
 );
 
-export default ({ variables, env, version = v }) => {
-  const { apis, clear } = useApiInterceptor();
+export default ({ variables, env, version = v, maxNumOfApiToStore = 0 }) => {
+  const { apis, clear } = useApiInterceptor(maxNumOfApiToStore);
 
   const [tab, setTab] = useState("api");
 
@@ -74,6 +74,7 @@ export default ({ variables, env, version = v }) => {
         backgroundColor: "#000000" + (isOpen ? "dd" : "bb"),
         height,
         width,
+        borderTopRightRadius: numPendingApiCalls || errors ? 0 : undefined,
       }}
       {...(isOpen ? {} : panResponder.panHandlers)}
     >
@@ -97,18 +98,14 @@ export default ({ variables, env, version = v }) => {
             <Label>{(env || "") + (env ? " " : "") + version}</Label>
           )}
           {!!DeviceInfo && (
-            <Label style={{ fontSize: 6 }}>
+            <Label>
               {DeviceInfo.getDeviceId() + " " + DeviceInfo.getSystemVersion()}
             </Label>
           )}
-          <Label style={{ fontSize: 6 }}>
-            {dimension.width + "x" + dimension.height}
-          </Label>
-          {variables?.GIT_BRANCH && (
-            <Label style={{ fontSize: 6 }}>{variables.GIT_BRANCH}</Label>
-          )}
+          <Label>{dimension.width + "x" + dimension.height}</Label>
+          {variables?.GIT_BRANCH && <Label>{variables.GIT_BRANCH}</Label>}
           {variables?.BUILD_DATE_TIME && (
-            <Label style={{ fontSize: 6 }}>{variables.BUILD_DATE_TIME}</Label>
+            <Label>{variables.BUILD_DATE_TIME}</Label>
           )}
         </TouchableOpacity>
       ) : (
@@ -129,7 +126,13 @@ export default ({ variables, env, version = v }) => {
                         borderColor: "white",
                       }}
                     >
-                      <Text style={{ color: "white", textAlign: "center" }}>
+                      <Text
+                        style={{
+                          color: "white",
+                          opacity: isSelected ? 1 : 0.5,
+                          textAlign: "center",
+                        }}
+                      >
                         {t.toUpperCase()}
                       </Text>
                     </TouchableOpacity>
@@ -143,7 +146,13 @@ export default ({ variables, env, version = v }) => {
           {tab === "variables" && !!variables && (
             <Variables variables={variables} />
           )}
-          {tab === "api" && <Api apis={apis} clear={clear} />}
+          {tab === "api" && (
+            <Api
+              apis={apis}
+              clear={clear}
+              maxNumOfApiToStore={maxNumOfApiToStore}
+            />
+          )}
         </SafeAreaView>
       )}
     </Animated.View>
@@ -156,12 +165,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  label: { color: "white", textAlign: "center", fontSize: 8 },
+  label: { color: "white", textAlign: "center", fontSize: 6 },
   badgeContainer: {
     gap: 3,
     flexDirection: "row",
-    top: -8,
-    right: -3,
+    top: -12,
+    right: -6,
     position: "absolute",
     zIndex: 999,
   },
