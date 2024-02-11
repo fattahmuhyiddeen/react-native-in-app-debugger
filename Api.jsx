@@ -27,7 +27,7 @@ const Row = ({ item }) => {
   const [tab, setTab] = useState(tabs[0].value);
   const hasResponse = item.response;
   const Tab = ({ value, hide }) => {
-    if(hide) return null;
+    if (hide) return null;
     const isSelected = value === tab;
     return (
       <TouchableOpacity
@@ -181,19 +181,19 @@ export default (props) => {
           const item = data[0];
           const hasResponse = !!item.response;
 
-          let duration = 0;
-          if (item.response?.datetime) {
-            let [hr, min, sec] = item.request.datetime.split(" ")[0].split(":");
-            const start = new Date();
-            start.setHours(hr);
-            start.setMinutes(min);
-            start.setSeconds(sec);
-            [hr, min, sec] = item.response.datetime.split(" ")[0].split(":");
-            const end = new Date();
-            end.setHours(hr);
-            end.setMinutes(min);
-            end.setSeconds(sec);
-            duration = (end.getTime() - start.getTime()) / 1000;
+          const duration = item.response?.timestamp
+            ? ~~(item.response?.timestamp - item.request.timestamp) / 1000
+            : 0;
+          const date = new Date(item.request.datetime);
+          let hour = date.getHours();
+          const minute = date.getMinutes();
+
+          const amPm = hour >= 12 ? "PM" : "AM";
+
+          if (hour > 12) {
+            hour -= 12;
+          } else if (hour === 0) {
+            hour = 12;
           }
           const isExpand = expands[item.id];
           return (
@@ -214,7 +214,7 @@ export default (props) => {
                   {item.request.method +
                     ` (${item.response?.status ?? "no response"})` +
                     " - " +
-                    item.request.datetime +
+                    item.request.time +
                     (hasResponse ? " - " + duration + " second(s)" : "") +
                     "\n"}
                 </Text>

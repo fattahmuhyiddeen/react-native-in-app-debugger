@@ -3,13 +3,6 @@ import XHRInterceptor from "react-native/Libraries/Network/XHRInterceptor.js";
 
 const filterNonBusinessRelatedAPI = true;
 
-const now = () =>
-  new Date().toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
-
 const shouldExclude = (url, method) =>
   ["HEAD"].includes(method) ||
   url.includes("codepush") ||
@@ -28,9 +21,21 @@ export default (maxNumOfApiToStore) => {
   const [apis, setApis] = useState([]);
 
   const makeRequest = (data) => {
+    const date = new Date();
+    let hour = date.getHours();
+    const minute = (date.getMinutes() + "").padStart(2, "0");
+
+    const amPm = hour >= 12 ? "PM" : "AM";
+
+    if (hour > 12) {
+      hour -= 12;
+    } else if (hour === 0) {
+      hour = 12;
+    }
     const request = {
       ...data,
-      datetime: now(),
+      timestamp: performance.now(),
+      time: `${hour}:${minute} ${amPm}`,
     };
     setApis((v) => {
       const newData = [
@@ -58,7 +63,7 @@ export default (maxNumOfApiToStore) => {
 
         oldData[i].response = {
           ...data,
-          datetime: now(),
+          timestamp: performance.now(),
           error,
         };
         break;
