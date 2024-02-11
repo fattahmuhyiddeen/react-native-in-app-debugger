@@ -31,6 +31,13 @@ const dimension = Dimensions.get("window");
 
 const v = DeviceInfo?.getReadableVersion() || "";
 
+let modelOs;
+if (DeviceInfo) {
+  let model = DeviceInfo.getDeviceId();
+  if (model === "unknown") model = DeviceInfo.getModel();
+  modelOs = model + " - " + DeviceInfo.getSystemVersion();
+}
+
 const Label = (props) => (
   <Text
     {...props}
@@ -97,12 +104,8 @@ export default ({ variables, env, version = v, maxNumOfApiToStore = 0 }) => {
           {(!!env || !!version) && (
             <Label>{(env || "") + (env ? " " : "") + version}</Label>
           )}
-          {!!DeviceInfo && (
-            <Label>
-              {DeviceInfo.getDeviceId() + " " + DeviceInfo.getSystemVersion()}
-            </Label>
-          )}
-          <Label>{dimension.width + "x" + dimension.height}</Label>
+          {!!modelOs && <Label>{modelOs}</Label>}
+          <Label>{dimension.width + " x " + dimension.height}</Label>
           {variables?.GIT_BRANCH && <Label>{variables.GIT_BRANCH}</Label>}
           {variables?.BUILD_DATE_TIME && (
             <Label>{variables.BUILD_DATE_TIME}</Label>
