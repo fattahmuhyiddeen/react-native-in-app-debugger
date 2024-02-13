@@ -9,8 +9,50 @@ Usage :
 
 ```
 import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {version} from './package.json';
+import InAppDebugger from 'react-native-in-app-debugger';
+
+const variables = {
+  url: 'https://staging.sample.com',
+};
+export default () => (
+  <>
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        gap: 10,
+      }}>
+      <TouchableOpacity
+        onPress={() => {
+          fetch('https://reactnative.dev/movies.json');
+        }}>
+        <Text>Success</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          fetch('https://reactnative.dev/wrong-url', {
+            headers: {key: 'value'},
+          });
+        }}>
+        <Text>Error</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          fetch('https://swapi.dev/api/planets/?format=wookiee');
+        }}>
+        <Text>Heavy</Text>
+      </TouchableOpacity>
+    </View>
+    <InAppDebugger version={version} env="staging" variables={variables} />
+  </>
+);
 
 ```
+
+Call `InAppDebugger` component on top most component, then a floating debugger will appear.
 
 
 ### Properties
