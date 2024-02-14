@@ -1,6 +1,6 @@
 # react-native-in-app-debugger
 
-This library's main usage is be used by Non-Technical tester during UAT or SIT or any testing phase.
+This library's main usage is to be used by Non-Technical testers during UAT, SIT or any testing phase.
 
 ![ezgif-3-1cb92b8367](https://github.com/fattahmuhyiddeen/react-native-in-app-debugger/assets/24792201/4ffe083a-4807-4a2e-a624-6a81f506439b)
 
