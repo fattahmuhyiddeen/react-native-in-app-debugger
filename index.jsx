@@ -58,13 +58,13 @@ export default ({
   const errors = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
   let badgeHeight = 10;
-  if (variables?.GIT_BRANCH) badgeHeight += 10;
-  if (variables?.BUILD_DATE_TIME) badgeHeight += 10;
+  if (variables?.GIT_BRANCH) badgeHeight += 7;
+  if (variables?.BUILD_DATE_TIME) badgeHeight += 7;
   const hasEnvOrVersion = !!env || !!version;
-  if (hasEnvOrVersion) badgeHeight += 10;
-  if (DeviceInfo) badgeHeight += 10;
-  if (badgeHeight === 10) badgeHeight += 10;
-  labels.forEach(() => (badgeHeight += 10));
+  if (hasEnvOrVersion) badgeHeight += 7;
+  if (DeviceInfo) badgeHeight += 7;
+  if (badgeHeight === 7) badgeHeight += 7;
+  labels.forEach(() => (badgeHeight += 7));
 
   const {
     translateX,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  label: { color: "white", textAlign: "center", fontSize: 6 },
+  label: { color: "white", textAlign: "center", fontSize: 5 },
   badgeContainer: {
     gap: 3,
     flexDirection: "row",
