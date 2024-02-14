@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-// hooks are prevented to be called conditionally, but in this case, bundle id / package name will never changed in run time, so it is safe to call the hooks under that condition
-
 import React, { useState } from "react";
 import {
   Animated,
