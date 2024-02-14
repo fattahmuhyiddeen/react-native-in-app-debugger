@@ -46,7 +46,7 @@ export default () => (
         <Text>Heavy</Text>
       </TouchableOpacity>
     </View>
-    <InAppDebugger version={version} env="staging" variables={variables} />
+    <InAppDebugger version={version} env="staging" variables={variables} labels={['branch: master']} />
   </>
 );
 
@@ -63,6 +63,7 @@ All FlatList props should work plus props mentioned below
 | ----------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | `env` | string | any value set here will be shown in the floating debugger panel | | Optional |
 | `variables` | Plain Old JavaScript Object object {} | Key-Value Plain Old JavaScript Object. Normal use case is to show API URL endpoints, environment variable values or any variables you want to debug on run time | | Optional. If set, the debugger will show a dedicated tab for variables when open in full screen mode |
+| `labels` | Array of strings | Array of strings you want to show of the floating debugger pill. For each strings in the array will eb displayed as a single line in the floating debugger pill | | Optional |
 | `maxNumOfApiToStore` | integer | Number of APIs to be kept. Too much API might make the whole app lag, therefore need to trade off. Suggested value is 50 | | Optional. If not set, all APIs will be kept forever |
 `version` | string | Any string passed here will be shown in debugger's floating panel. | | Optional. If not supplied, version number will taken automatically using React Native Device Info library. But if Device Info library is not installed, then no version will be shown if this prop is not passed.
 
