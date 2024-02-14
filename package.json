@@ -1,13 +1,12 @@
 {
   "name": "react-native-in-app-debugger",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "index.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "npm publish --access=public"
   },
-  "devDependencies": {},
   "keywords": [
     "debugger"
   ],

@@ -47,7 +47,13 @@ const Label = (props) => (
   />
 );
 
-export default ({ variables, env, version = v, maxNumOfApiToStore = 0 }) => {
+export default ({
+  variables,
+  env,
+  version = v,
+  maxNumOfApiToStore = 0,
+  labels = [],
+}) => {
   const { apis, clear } = useApiInterceptor(maxNumOfApiToStore);
 
   const [tab, setTab] = useState("api");
@@ -61,6 +67,7 @@ export default ({ variables, env, version = v, maxNumOfApiToStore = 0 }) => {
   if (hasEnvOrVersion) badgeHeight += 10;
   if (DeviceInfo) badgeHeight += 10;
   if (badgeHeight === 10) badgeHeight += 10;
+  labels.forEach(() => (badgeHeight += 10));
 
   const {
     translateX,
@@ -110,6 +117,9 @@ export default ({ variables, env, version = v, maxNumOfApiToStore = 0 }) => {
           {variables?.BUILD_DATE_TIME && (
             <Label>{variables.BUILD_DATE_TIME}</Label>
           )}
+          {labels.map((l) => (
+            <Label key={l}>{l}</Label>
+          ))}
         </TouchableOpacity>
       ) : (
         <SafeAreaView style={{ flex: 1 }}>
@@ -173,7 +183,7 @@ const styles = StyleSheet.create({
     gap: 3,
     flexDirection: "row",
     top: -12,
-    right: -6,
+    right: -3,
     position: "absolute",
     zIndex: 999,
   },
