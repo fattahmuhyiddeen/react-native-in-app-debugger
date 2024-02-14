@@ -22,7 +22,7 @@ const Row = ({ item }) => {
   const tabs = [
     { value: "Response Body" },
     { value: "Request Body", hide: !item.request.data },
-    { value: "Request Body" },
+    { value: "Request Header" },
   ];
   const [tab, setTab] = useState(tabs[0].value);
   const hasResponse = item.response;
@@ -184,17 +184,6 @@ export default (props) => {
           const duration = item.response?.timestamp
             ? ~~(item.response?.timestamp - item.request.timestamp) / 1000
             : 0;
-          const date = new Date(item.request.datetime);
-          let hour = date.getHours();
-          const minute = date.getMinutes();
-
-          const amPm = hour >= 12 ? "PM" : "AM";
-
-          if (hour > 12) {
-            hour -= 12;
-          } else if (hour === 0) {
-            hour = 12;
-          }
           const isExpand = expands[item.id];
           return (
             <View style={styles.rowHeader}>
