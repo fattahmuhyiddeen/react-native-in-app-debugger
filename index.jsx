@@ -63,7 +63,7 @@ export default ({
   const hasEnvOrVersion = !!env || !!version;
   if (hasEnvOrVersion) badgeHeight += 7;
   if (DeviceInfo) badgeHeight += 7;
-  if (badgeHeight === 7) badgeHeight += 7;
+  if (badgeHeight === 10) badgeHeight += 7;
   labels.forEach(() => (badgeHeight += 7));
 
   const {
