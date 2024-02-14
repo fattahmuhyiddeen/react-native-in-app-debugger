@@ -2,7 +2,8 @@
 
 This library's main usage is be used by Non-Technical tester during UAT or SIT or any testing phase.
 
-![Simulator Screen Recording - iPhone SE (3rd generation) - 2024-02-13 at 19 07 03](https://github.com/fattahmuhyiddeen/react-native-in-app-debugger/assets/24792201/87d0ef78-f692-4cbd-88ed-a6ba67d5931e)
+![ezgif-3-1cb92b8367](https://github.com/fattahmuhyiddeen/react-native-in-app-debugger/assets/24792201/4ffe083a-4807-4a2e-a624-6a81f506439b)
+
 
 
 Usage :
