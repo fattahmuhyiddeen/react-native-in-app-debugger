@@ -73,6 +73,12 @@ All FlatList props should work plus props mentioned below
 
 If this library is installed, the floating debugger can automatically show version number, device model, OS version
 
+<img width="129" alt="image" src="https://github.com/fattahmuhyiddeen/react-native-in-app-debugger/assets/24792201/e5c31d91-4915-4270-a968-f3156d5e5a96">
+
+
 #### React Native Clipboard (https://www.npmjs.com/package/@react-native-clipboard/clipboard)
 
 If this library is installed, when user expand any selected API, there will be a `Copy` button available. Make it very easy for non-techincal tester or user want to copy and paste the API request and response details.
+
+<img width="535" alt="image" src="https://github.com/fattahmuhyiddeen/react-native-in-app-debugger/assets/24792201/d4f58ee3-e553-4cae-91df-ba7e26d8cd70">
+
