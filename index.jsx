@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  label: { color: "white", textAlign: "center", fontSize: 5 },
+  label: { color: "white", textAlign: "center", fontSize: 6 },
   badgeContainer: {
     gap: 3,
     flexDirection: "row",
