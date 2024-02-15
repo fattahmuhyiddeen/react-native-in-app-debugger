@@ -36,6 +36,10 @@ export default (defaultBadgeHeight) => {
   ).current;
 
   useEffect(() => {
+    Animated.spring(badgeHeight, { toValue: isOpen ? height : defaultBadgeHeight, ...und }).start();
+  },[defaultBadgeHeight])
+
+  useEffect(() => {
     Animated.spring(position, { toValue: isOpen ? { x: 0, y: 0 } : cachePosition.current, ...und }).start();
     Animated.spring(borderRadius, { toValue: isOpen ? 0 : defaultBorderRadius, ...und }).start();
     Animated.spring(badgeHeight, { toValue: isOpen ? height : defaultBadgeHeight, ...und }).start();
