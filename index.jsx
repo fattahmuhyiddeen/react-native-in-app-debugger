@@ -57,13 +57,13 @@ export default ({
 
   const errors = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
-  let badgeHeight = 10;
+  let badgeHeight = 20;
   if (variables?.GIT_BRANCH) badgeHeight += 7;
   if (variables?.BUILD_DATE_TIME) badgeHeight += 7;
   const hasEnvOrVersion = !!env || !!version;
   if (hasEnvOrVersion) badgeHeight += 7;
   if (DeviceInfo) badgeHeight += 7;
-  if (badgeHeight === 10) badgeHeight += 7;
+  if (badgeHeight === 20) badgeHeight += 7;
   labels.forEach(() => (badgeHeight += 7));
 
   const {
@@ -90,7 +90,7 @@ export default ({
       {...(isOpen ? {} : panResponder.panHandlers)}
     >
       {!isOpen ? (
-        <TouchableOpacity onPress={() => setIsOpen(true)} style={styles.box}>
+        <TouchableOpacity onPress={() => setIsOpen(true)} style={styles.box} activeOpacity={.8}>
           <View style={styles.badgeContainer}>
             {!!numPendingApiCalls && (
               <View style={[styles.badge, { backgroundColor: "orange" }]}>
