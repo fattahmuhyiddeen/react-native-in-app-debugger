@@ -8,9 +8,6 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-// const DeviceInfo = React.lazy(() =>
-//   import("react-native-device-info").catch(() => ({ default: null }))
-// );
 
 let DeviceInfo;
 try {
@@ -179,7 +176,7 @@ const styles = StyleSheet.create({
   badgeContainer: {
     gap: 3,
     flexDirection: "row",
-    top: -12,
+    top: -10,
     right: -3,
     position: "absolute",
     zIndex: 999,
