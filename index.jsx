@@ -94,14 +94,14 @@ export default ({
           <View style={styles.badgeContainer}>
             {!!numPendingApiCalls && (
               <View style={[styles.badge, { backgroundColor: "orange" }]}>
-                <Text style={{ fontSize: 8, color: "white" }}>
+                <Text style={{ fontSize: 6, color: "white" }}>
                   {numPendingApiCalls}
                 </Text>
               </View>
             )}
             {!!errors && (
               <View style={[styles.badge, { backgroundColor: "red" }]}>
-                <Text style={{ fontSize: 8, color: "white" }}>{errors}</Text>
+                <Text style={{ fontSize: 6, color: "white" }}>{errors}</Text>
               </View>
             )}
           </View>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   badge: {
-    padding: 4,
+    padding: 3,
     borderRadius: 999,
   },
   close: {
