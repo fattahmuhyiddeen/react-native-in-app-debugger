@@ -84,18 +84,15 @@ const Row = ({ item }) => {
   );
 };
 
+const isError = (a) => a.response?.status < 200 || a.response?.status >= 400;
 export default (props) => {
   const [filter, setFilter] = useState("");
   const [errorOnly, setErrorOnly] = useState(false);
   const [filterUrlOnly, setFilterUrlOnly] = useState(true);
   const [expands, setExpands] = useState({});
-  const apis = props.apis.filter(
-    (a) => !errorOnly || a.response?.status < 200 || a.response?.status >= 400
-  );
+  const apis = props.apis.filter((a) => !errorOnly || isError(a));
 
-  const hasError = apis.some(
-    (a) => a.response?.status < 200 || a.response?.status >= 400
-  );
+  const hasError = apis.some(isError);
 
   return (
     <>
@@ -117,7 +114,9 @@ export default (props) => {
               ])
             }
           >
-            <Text style={{ color: "black" }}>Clear {apis.length} APIs</Text>
+            <Text style={{ color: "black" }}>
+              Clear {props.apis.length} APIs
+            </Text>
           </TouchableOpacity>
         )}
         {hasError && !filter && (
@@ -131,7 +130,7 @@ export default (props) => {
                 textDecorationLine: errorOnly ? "line-through" : undefined,
               }}
             >
-              Error Only
+              {apis.filter(isError).length} Error(s) Only
             </Text>
           </TouchableOpacity>
         )}
