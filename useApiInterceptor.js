@@ -18,6 +18,7 @@ const parse = (data) => {
 };
 
 export default (maxNumOfApiToStore) => {
+  console.log("xxxxx maxNumOfApiToStore", maxNumOfApiToStore);
   const [apis, setApis] = useState([]);
 
   const makeRequest = (data) => {
@@ -40,9 +41,8 @@ export default (maxNumOfApiToStore) => {
     setApis((v) => {
       const newData = [
         { request, id: Date.now().toString(36) + Math.random().toString(36) },
-        ...v,
+        ...(maxNumOfApiToStore ? v.slice(0, maxNumOfApiToStore - 1) : v),
       ];
-      if (maxNumOfApiToStore) newData.slice(0, maxNumOfApiToStore);
       return newData;
     });
   };

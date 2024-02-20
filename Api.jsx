@@ -157,7 +157,7 @@ export default (props) => {
       </View>
       {!filter &&
         !!props.maxNumOfApiToStore &&
-        apis.length === props.maxNumOfApiToStore && (
+        apis.length >= props.maxNumOfApiToStore && (
           <Text style={{ color: "#ffffff88", padding: 10 }}>
             Capped to only latest {props.maxNumOfApiToStore} APIs
           </Text>
