@@ -18,7 +18,6 @@ const parse = (data) => {
 };
 
 export default (maxNumOfApiToStore) => {
-  console.log("xxxxx maxNumOfApiToStore", maxNumOfApiToStore);
   const [apis, setApis] = useState([]);
 
   const makeRequest = (data) => {
