@@ -106,7 +106,7 @@ export default ({
             <Label>{(env || "") + (env ? " " : "") + version}</Label>
           )}
           {!!modelOs && <Label>{modelOs}</Label>}
-          <Label>{dimension.width + " x " + dimension.height}</Label>
+          <Label>{~~dimension.width + " x " + ~~dimension.height}</Label>
           {variables?.GIT_BRANCH && <Label>{variables.GIT_BRANCH}</Label>}
           {variables?.BUILD_DATE_TIME && (
             <Label>{variables.BUILD_DATE_TIME}</Label>
