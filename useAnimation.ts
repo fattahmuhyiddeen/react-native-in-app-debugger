@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, PanResponder, useWindowDimensions } from 'react-native';
+import { Animated, Keyboard, PanResponder, useWindowDimensions } from 'react-native';
 
 const defaultBadgeWidth = 80;
 const defaultBorderRadius = 10;
@@ -13,6 +13,20 @@ export default (defaultBadgeHeight) => {
   const badgeHeight = useRef(new Animated.Value(defaultBadgeHeight)).current;
   const badgeWidth = useRef(new Animated.Value(defaultBadgeWidth)).current;
   const { width, height } = useWindowDimensions();
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      Animated.spring(position, { ...und, toValue: { x: cachePosition.current.x, y: 0 } }).start();
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      Animated.spring(position, { ...und, toValue: cachePosition.current }).start();
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,7 +51,7 @@ export default (defaultBadgeHeight) => {
 
   useEffect(() => {
     Animated.spring(badgeHeight, { toValue: isOpen ? height : defaultBadgeHeight, ...und }).start();
-  },[defaultBadgeHeight])
+  }, [defaultBadgeHeight]);
 
   useEffect(() => {
     Animated.spring(position, { toValue: isOpen ? { x: 0, y: 0 } : cachePosition.current, ...und }).start();
