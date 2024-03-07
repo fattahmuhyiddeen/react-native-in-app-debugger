@@ -43,7 +43,10 @@ export default (defaultBadgeHeight) => {
       onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], und),
       onPanResponderRelease: (_, g) => {
         position.flattenOffset();
-        cachePosition.current = { x: g.moveX > width / 2 ? width - defaultBadgeWidth : 0, y: g.moveY };
+        cachePosition.current = {
+          x: g.moveX > width / 2 ? width - defaultBadgeWidth : 0,
+          y: Math.min(g.moveY, height - defaultBadgeHeight),
+        };
         Animated.spring(position, { ...und, toValue: cachePosition.current }).start();
       },
     }),
