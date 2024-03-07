@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     gap: 5,
     backgroundColor: "black",
     padding: 5,
-    paddingTop: 20,
+    paddingTop: 10,
     shadowColor: "black",
     shadowOffset: {
       width: 0,
