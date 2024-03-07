@@ -18,6 +18,7 @@ export default ({ variables }) => {
         data={Object.keys(variables).filter(
           (k) => !filter || variables[k].toLowerCase().includes(filter) || k.toLowerCase().includes(filter),
         )}
+        showsVerticalScrollIndicator
         keyExtractor={(i) => i}
         renderItem={({ item }) => (
           <Text selectable style={{ color: 'white', marginVertical: 10 }}>

@@ -130,7 +130,7 @@ export default (props) => {
                 textDecorationLine: errorOnly ? "line-through" : undefined,
               }}
             >
-              {apis.filter(isError).length} Error(s) Only
+              {apis.filter(isError).length} error{apis.filter(isError).length > 1 ? 's' : ''}
             </Text>
           </TouchableOpacity>
         )}
@@ -166,6 +166,7 @@ export default (props) => {
         contentContainerStyle={{ padding: 5 }}
         keyExtractor={(i) => i.id}
         stickySectionHeadersEnabled
+        showsVerticalScrollIndicator
         sections={apis
           .filter((a) =>
             !filter || filterUrlOnly
