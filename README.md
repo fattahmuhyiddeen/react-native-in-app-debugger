@@ -56,6 +56,14 @@ export default () => (
 Call `InAppDebugger` component on top most component, then a floating debugger will appear.
 
 
+### Installation
+
+You can declare this in your `package.json` without the need to specify version
+```
+"react-native-in-app-debugger": "latest",
+```
+because we are committed to ensure that no breaking changes for every released version and all releases will be backward compatible. Therefore, you will enjoy latest version hassle free.
+
 ### Properties
 
 All FlatList props should work plus props mentioned below
