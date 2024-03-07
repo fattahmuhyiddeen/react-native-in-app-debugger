@@ -13,22 +13,22 @@ export default (defaultBadgeHeight) => {
   const badgeHeight = useRef(new Animated.Value(defaultBadgeHeight)).current;
   const badgeWidth = useRef(new Animated.Value(defaultBadgeWidth)).current;
   const { width, height } = useWindowDimensions();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      Animated.spring(position, { ...und, toValue: { x: cachePosition.current.x, y: 0 } }).start();
+      !isOpen && Animated.spring(position, { ...und, toValue: { x: cachePosition.current.x, y: 0 } }).start();
     });
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      Animated.spring(position, { ...und, toValue: cachePosition.current }).start();
+      !isOpen && Animated.spring(position, { ...und, toValue: cachePosition.current }).start();
     });
 
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
     };
-  }, []);
+  }, [isOpen]);
 
-  const [isOpen, setIsOpen] = useState(false);
 
   const panResponder = useRef(
     PanResponder.create({
