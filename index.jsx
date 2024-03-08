@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import {
   Animated,
-  Text,
   StyleSheet,
   TouchableOpacity,
   View,
   SafeAreaView,
   Dimensions,
 } from "react-native";
-
+import Text from "./Text";
 let DeviceInfo;
 try {
   DeviceInfo = require("react-native-device-info");
@@ -87,7 +86,11 @@ export default ({
       {...(isOpen ? {} : panResponder.panHandlers)}
     >
       {!isOpen ? (
-        <TouchableOpacity onPress={() => setIsOpen(true)} style={styles.box} activeOpacity={.8}>
+        <TouchableOpacity
+          onPress={() => setIsOpen(true)}
+          style={styles.box}
+          activeOpacity={0.8}
+        >
           <View style={styles.badgeContainer}>
             {!!numPendingApiCalls && (
               <View style={[styles.badge, { backgroundColor: "orange" }]}>

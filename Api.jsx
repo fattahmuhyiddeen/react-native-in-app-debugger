@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Text,
   SectionList,
   TextInput,
   View,
@@ -8,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-// import Clipboard from '@react-native-clipboard/clipboard';
+import Text from "./Text";
 let Clipboard;
 try {
   Clipboard = require("@react-native-clipboard/clipboard")?.default;
@@ -130,7 +129,8 @@ export default (props) => {
                 textDecorationLine: errorOnly ? "line-through" : undefined,
               }}
             >
-              {apis.filter(isError).length} error{apis.filter(isError).length > 1 ? 's' : ''}
+              {apis.filter(isError).length} error
+              {apis.filter(isError).length > 1 ? "s" : ""}
             </Text>
           </TouchableOpacity>
         )}

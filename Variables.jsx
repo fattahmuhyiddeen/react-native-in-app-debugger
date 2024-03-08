@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Text, FlatList, TextInput } from 'react-native';
+import { FlatList, TextInput } from 'react-native';
+import Text from "./Text";
 
 export default ({ variables }) => {
   const [filter, setFilter] = useState('');
