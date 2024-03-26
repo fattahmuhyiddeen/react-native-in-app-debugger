@@ -22,13 +22,15 @@ import useApiInterceptor from "./useApiInterceptor";
 
 const dimension = Dimensions.get("window");
 
-const v = DeviceInfo?.getReadableVersion() || "";
-
+let v = "";
 let modelOs;
 if (DeviceInfo) {
   let model = DeviceInfo.getDeviceId();
   if (model === "unknown") model = DeviceInfo.getModel();
   modelOs = model + " - " + DeviceInfo.getSystemVersion();
+  const pcs = DeviceInfo.getReadableVersion().split(".");
+  const lastPc = pcs.pop();
+  v = pcs.join(".") + "-" + lastPc;
 }
 
 const Label = (props) => (
@@ -120,6 +122,11 @@ export default ({
         </TouchableOpacity>
       ) : (
         <SafeAreaView style={{ flex: 1 }}>
+          {!!version && (
+            <View style={{ backgroundColor: "black" }}>
+              <Label>{version}</Label>
+            </View>
+          )}
           <View style={{ flexDirection: "row", padding: 5 }}>
             <View style={{ flex: 1, flexDirection: "row" }}>
               {!!variables &&
