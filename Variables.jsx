@@ -13,6 +13,7 @@ export default ({ variables }) => {
         placeholderTextColor='grey'
         style={{ paddingHorizontal: 5, color: 'white' }}
         onChangeText={(t) => setFilter(t.toLowerCase())}
+        clearButtonMode="always"
       />
       <FlatList
         contentContainerStyle={{ padding: 5, paddingBottom: 20 }}
