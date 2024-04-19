@@ -55,14 +55,18 @@ export default ({
 
   const errors = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
-  let badgeHeight = 20;
-  if (variables?.GIT_BRANCH) badgeHeight += 7;
-  if (variables?.BUILD_DATE_TIME) badgeHeight += 7;
-  const hasEnvOrVersion = !!env || !!version;
-  if (hasEnvOrVersion) badgeHeight += 7;
-  if (DeviceInfo) badgeHeight += 7;
-  if (badgeHeight === 20) badgeHeight += 7;
-  labels.forEach(() => (badgeHeight += 7));
+  let badgeHeight = 13;
+
+  const displayLabels = [
+    (!!env || !!version) && (env || "") + (env ? " " : "") + version,
+    modelOs,
+    ~~dimension.width + " x " + ~~dimension.height,
+    variables?.GIT_BRANCH,
+    variables?.BUILD_DATE_TIME,
+    ...labels,
+  ].filter(Boolean);
+
+  displayLabels.forEach(() => (badgeHeight += 7));
 
   const {
     translateX,
@@ -107,26 +111,19 @@ export default ({
               </View>
             )}
           </View>
-          {(!!env || !!version) && (
-            <Label>{(env || "") + (env ? " " : "") + version}</Label>
-          )}
-          {!!modelOs && <Label>{modelOs}</Label>}
-          <Label>{~~dimension.width + " x " + ~~dimension.height}</Label>
-          {variables?.GIT_BRANCH && <Label>{variables.GIT_BRANCH}</Label>}
-          {variables?.BUILD_DATE_TIME && (
-            <Label>{variables.BUILD_DATE_TIME}</Label>
-          )}
-          {labels.map((l) => (
+          {displayLabels.map((l) => (
             <Label key={l}>{l}</Label>
           ))}
         </TouchableOpacity>
       ) : (
         <SafeAreaView style={{ flex: 1 }}>
-          {!!version && (
-            <View style={{ backgroundColor: "black" }}>
-              <Label>{version}</Label>
-            </View>
-          )}
+          <View
+            style={{ backgroundColor: "black", flexDirection: "row", gap: 7 }}
+          >
+            {displayLabels.map((l) => (
+              <Label key={l}>{l}</Label>
+            ))}
+          </View>
           <View style={{ flexDirection: "row", padding: 5 }}>
             <View style={{ flex: 1, flexDirection: "row" }}>
               {!!variables &&
