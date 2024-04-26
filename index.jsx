@@ -117,9 +117,7 @@ export default ({
         </TouchableOpacity>
       ) : (
         <SafeAreaView style={{ flex: 1 }}>
-          <View
-            style={{ backgroundColor: "black", flexDirection: "row", gap: 7 }}
-          >
+          <View style={styles.labelContainer}>
             {displayLabels.map((l) => (
               <Label key={l}>{l}</Label>
             ))}
@@ -197,5 +195,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     paddingHorizontal: 10,
+  },
+  labelContainer: {
+    backgroundColor: "black",
+    flexDirection: "row",
+    columnGap: 7,
+    flexWrap: "wrap",
   },
 });
