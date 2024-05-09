@@ -48,8 +48,9 @@ export default ({
   version = v,
   maxNumOfApiToStore = 0,
   labels = [],
+  interceptResponse
 }) => {
-  const { apis, clear } = useApiInterceptor(maxNumOfApiToStore);
+  const { apis, clear } = useApiInterceptor(maxNumOfApiToStore, interceptResponse);
 
   const [tab, setTab] = useState("api");
 

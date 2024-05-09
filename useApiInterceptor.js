@@ -17,7 +17,7 @@ const parse = (data) => {
   }
 };
 
-export default (maxNumOfApiToStore) => {
+export default (maxNumOfApiToStore, interceptResponse) => {
   const [apis, setApis] = useState([]);
 
   const makeRequest = (data) => {
@@ -93,6 +93,7 @@ export default (maxNumOfApiToStore) => {
     });
 
     XHRInterceptor.setResponseCallback((...obj) => {
+      interceptResponse?.(...obj);
       const { _method: method, _url: url, _response, status } = obj[5];
       if (filterNonBusinessRelatedAPI) {
         if (shouldExclude(url, method)) return;
