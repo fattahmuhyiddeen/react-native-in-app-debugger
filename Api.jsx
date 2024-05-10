@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Text from "./Text";
+import Highlight from "./Highlight";
 let Clipboard;
 try {
   Clipboard = require("@react-native-clipboard/clipboard")?.default;
@@ -17,7 +18,7 @@ try {
 
 const MAX_URL_LENGTH = 100;
 
-const Row = ({ item }) => {
+const Row = ({ item, filter }) => {
   const tabs = [
     { value: "Response Body" },
     { value: "Request Body", hide: !item.request.data },
@@ -53,7 +54,7 @@ const Row = ({ item }) => {
     <View style={styles.details}>
       {item.request.url.length > MAX_URL_LENGTH && (
         <Text style={{ color: "#ffffff99", paddingVertical: 20 }}>
-          {item.request.url}
+          <Highlight text={item.request.url} filter={filter} />
         </Text>
       )}
       <View>
@@ -65,17 +66,26 @@ const Row = ({ item }) => {
 
         {tab === tabs[0].value && hasResponse && (
           <Text style={{ color: "white" }}>
-            {JSON.stringify(item.response.data, undefined, 4)}
+            <Highlight
+              text={JSON.stringify(item.response.data, undefined, 4)}
+              filter={filter}
+            />
           </Text>
         )}
         {tab === tabs[1].value && (
           <Text style={{ color: "white" }}>
-            {JSON.stringify(item.request.data, undefined, 4)}
+            <Highlight
+              text={JSON.stringify(item.request.data, undefined, 4)}
+              filter={filter}
+            />
           </Text>
         )}
         {tab === tabs[2].value && (
           <Text style={{ color: "white" }}>
-            {JSON.stringify(item.request.headers, undefined, 4)}
+            <Highlight
+              text={JSON.stringify(item.request.headers, undefined, 4)}
+              filter={filter}
+            />
           </Text>
         )}
       </View>
@@ -175,7 +185,11 @@ export default (props) => {
           )
           .map((data) => ({ data: [data], id: data.id }))}
         renderItem={(i) =>
-          expands[i.item.id] ? <Row {...i} /> : <View style={{ height: 20 }} />
+          expands[i.item.id] ? (
+            <Row {...i} filter={filter} />
+          ) : (
+            <View style={{ height: 20 }} />
+          )
         }
         renderSectionHeader={({ section: { data } }) => {
           const item = data[0];
@@ -207,7 +221,10 @@ export default (props) => {
                     (hasResponse ? " - " + duration + " second(s)" : "") +
                     "\n"}
                 </Text>
-                {item.request.url.slice(0, MAX_URL_LENGTH)}
+                <Highlight
+                  text={item.request.url.slice(0, MAX_URL_LENGTH)}
+                  filter={filter}
+                />
                 {item.request.url.length > MAX_URL_LENGTH && "......."}
               </Text>
               <View style={{ gap: 4 }}>
