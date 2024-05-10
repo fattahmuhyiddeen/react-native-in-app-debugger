@@ -24,18 +24,12 @@ export default (maxNumOfApiToStore, interceptResponse) => {
     const date = new Date();
     let hour = date.getHours();
     const minute = (date.getMinutes() + "").padStart(2, "0");
+    const second = (date.getSeconds() + "").padStart(2, "0");
 
-    const amPm = hour >= 12 ? "PM" : "AM";
-
-    if (hour > 12) {
-      hour -= 12;
-    } else if (hour === 0) {
-      hour = 12;
-    }
     const request = {
       ...data,
       timestamp: performance.now(),
-      time: `${hour}:${minute} ${amPm}`,
+      time: `${hour}:${minute}:${second}`,
     };
     setApis((v) => {
       const newData = [
