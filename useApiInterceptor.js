@@ -17,10 +17,11 @@ const parse = (data) => {
   }
 };
 
-export default (maxNumOfApiToStore, interceptResponse) => {
+export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
   const [apis, setApis] = useState([]);
 
   const makeRequest = (data) => {
+    if (blacklists.some(b => b.url === data.url && b.method === data.method)) return;
     const date = new Date();
     let hour = date.getHours();
     const minute = (date.getMinutes() + "").padStart(2, "0");
@@ -39,6 +40,12 @@ export default (maxNumOfApiToStore, interceptResponse) => {
       return newData;
     });
   };
+
+  useEffect(() => {
+    setApis((v) => (
+      v.filter(v => !blacklists.some(b => b.url === v.request.url && b.method === v.request.method))
+    ))
+  }, [blacklists])
 
   const receiveResponse = (data) => {
     const error = data.status < 200 || data.status >= 400;

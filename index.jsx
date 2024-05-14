@@ -50,7 +50,8 @@ export default ({
   labels = [],
   interceptResponse
 }) => {
-  const { apis, clear } = useApiInterceptor(maxNumOfApiToStore, interceptResponse);
+  const [blacklists, setBlacklists] = useState([]);
+  const { apis, clear } = useApiInterceptor(maxNumOfApiToStore, blacklists, interceptResponse);
 
   const [tab, setTab] = useState("api");
 
@@ -162,9 +163,7 @@ export default ({
           )}
           {tab === "api" && (
             <Api
-              apis={apis}
-              clear={clear}
-              maxNumOfApiToStore={maxNumOfApiToStore}
+              {...{apis, clear, setBlacklists, blacklists, maxNumOfApiToStore}}
             />
           )}
         </SafeAreaView>

@@ -59,9 +59,7 @@ const Row = ({ item, filter }) => {
       )}
       <View>
         <View style={{ flexDirection: "row" }}>
-          {tabs.map((t) => (
-            <Tab key={t.value} {...t} />
-          ))}
+          {tabs.map((t) => <Tab key={t.value} {...t} />)}
         </View>
 
         {tab === tabs[0].value && hasResponse && (
@@ -104,14 +102,7 @@ export default (props) => {
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: "row",
-          paddingLeft: 5,
-          alignItems: "center",
-          gap: 5,
-        }}
-      >
+      <View style={styles.container}>
         {!!apis.length && !filter && (
           <TouchableOpacity
             style={{ padding: 5, backgroundColor: "white", borderRadius: 5 }}
@@ -122,7 +113,7 @@ export default (props) => {
               ])
             }
           >
-            <Text style={{ color: "black" }}>
+            <Text style={{ color: "black", fontSize: 10 }}>
               Clear {props.apis.length} APIs
             </Text>
           </TouchableOpacity>
@@ -136,6 +127,7 @@ export default (props) => {
               style={{
                 color: "red",
                 textDecorationLine: errorOnly ? "line-through" : undefined,
+                fontSize: 10,
               }}
             >
               {apis.filter(isError).length} error
@@ -143,6 +135,22 @@ export default (props) => {
             </Text>
           </TouchableOpacity>
         )}
+        {!!props.blacklists.length &&  !filter && (
+          <TouchableOpacity
+            style={{ padding: 5, backgroundColor: "white", borderRadius: 5 }}
+            onPress={() =>
+              Alert.alert("Are you sure", "You want to clear all blacklists", [
+                { text: "Clear", onPress: () => props.setBlacklists([]), style: "cancel" },
+                { text: "Cancel" },
+              ])
+            }
+          >
+            <Text style={{ color: "black", fontSize: 10 }}>
+              Clear {props.blacklists.length} Blacklists
+            </Text>
+          </TouchableOpacity>
+        )}
+
         <TextInput
           value={filter}
           placeholder="Filter..."
@@ -179,23 +187,15 @@ export default (props) => {
           const item = data[0];
           const hasResponse = !!item.response;
 
-          const duration = item.response?.timestamp
-            ? ~~(item.response?.timestamp - item.request.timestamp) / 1000
-            : 0;
+          const duration = item.response?.timestamp ? ~~(item.response?.timestamp - item.request.timestamp) / 1000 : 0;
           const isExpand = expands[item.id];
+          const color = hasResponse ? item.response.error ? "red" : "white" : "yellow";
+
           return (
             <View style={styles.rowHeader}>
               <Text
                 selectable
-                style={{
-                  flex: 1,
-                  color: hasResponse
-                    ? item.response.error
-                      ? "red"
-                      : "white"
-                    : "yellow",
-                  marginVertical: 10,
-                }}
+                style={{flex: 1, color, marginVertical: 10}}
               >
                 <Text style={{ opacity: 0.7 }}>
                   {item.request.method +
@@ -223,7 +223,7 @@ export default (props) => {
                   }
                   style={styles.actionButton}
                 >
-                  <Text style={{ color: "black" }}>
+                  <Text style={{ color: "black", fontSize: 10 }}>
                     {isExpand ? "Hide" : "Show"}
                   </Text>
                 </TouchableOpacity>
@@ -232,15 +232,19 @@ export default (props) => {
                     onPress={() => {
                       const content = { ...item };
                       delete content.id;
-                      Clipboard.setString(
-                        JSON.stringify(content, undefined, 4)
-                      );
+                      Clipboard.setString(JSON.stringify(content, undefined, 4));
                     }}
                     style={styles.actionButton}
                   >
-                    <Text style={{ color: "black" }}>Copy</Text>
+                    <Text style={{ color: "black", fontSize: 10 }}>Copy</Text>
                   </TouchableOpacity>
                 )}
+                <TouchableOpacity
+                  onPress={() => props.setBlacklists(v => [...v, item.request])}
+                  style={styles.actionButton}
+                >
+                  <Text style={{ color: "black", fontSize: 10 }}>Blacklist</Text>
+                </TouchableOpacity>
               </View>
             </View>
           );
@@ -251,6 +255,12 @@ export default (props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    paddingLeft: 5,
+    alignItems: "center",
+    gap: 5,
+  },
   details: {
     padding: 5,
     backgroundColor: "#171717",
