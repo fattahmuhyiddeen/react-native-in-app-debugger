@@ -240,7 +240,12 @@ export default (props) => {
                   </TouchableOpacity>
                 )}
                 <TouchableOpacity
-                  onPress={() => props.setBlacklists(v => [...v, item.request])}
+                  onPress={() => {
+                    Alert.alert("Are you sure", `You want to blacklist: \n\n(${item.request.method}) ${item.request.url} \n\nwhere all history logs for this API will be removed and all future request for this API will not be recorded?`, [
+                      { text: "Blacklist", onPress: () => props.setBlacklists(v => [...v, item.request]), style: "cancel" },
+                      { text: "Cancel" },
+                    ])
+                  }}
                   style={styles.actionButton}
                 >
                   <Text style={{ color: "black", fontSize: 10 }}>Blacklist</Text>
