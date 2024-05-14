@@ -143,16 +143,14 @@ export default (props) => {
             </Text>
           </TouchableOpacity>
         )}
-        <View style={{ flexDirection: "row", flex: 1 }}>
-          <TextInput
-            value={filter}
-            placeholder="Filter..."
-            clearButtonMode="always"
-            placeholderTextColor="grey"
-            style={{ paddingHorizontal: 5, color: "white", flex: 1 }}
-            onChangeText={(t) => setFilter(t.toLowerCase())}
-          />
-        </View>
+        <TextInput
+          value={filter}
+          placeholder="Filter..."
+          clearButtonMode="always"
+          placeholderTextColor="grey"
+          style={{ paddingHorizontal: 5, color: "white", flex: 1 }}
+          onChangeText={(t) => setFilter(t.toLowerCase())}
+        />
       </View>
       {!filter &&
         !!props.maxNumOfApiToStore &&
@@ -162,7 +160,6 @@ export default (props) => {
           </Text>
         )}
       <SectionList
-        contentContainerStyle={{ padding: 5 }}
         keyExtractor={(i) => i.id}
         stickySectionHeadersEnabled
         showsVerticalScrollIndicator
