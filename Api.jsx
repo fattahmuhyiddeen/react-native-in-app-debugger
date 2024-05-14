@@ -97,7 +97,6 @@ const isError = (a) => a.response?.status < 200 || a.response?.status >= 400;
 export default (props) => {
   const [filter, setFilter] = useState("");
   const [errorOnly, setErrorOnly] = useState(false);
-  const [filterUrlOnly, setFilterUrlOnly] = useState(true);
   const [expands, setExpands] = useState({});
   const apis = props.apis.filter((a) => !errorOnly || isError(a));
 
@@ -154,16 +153,6 @@ export default (props) => {
             onChangeText={(t) => setFilter(t.toLowerCase())}
           />
         </View>
-        {!!filter && (
-          <TouchableOpacity
-            style={{ padding: 5 }}
-            onPress={() => setFilterUrlOnly((v) => !v)}
-          >
-            <Text style={{ color: "#ffffff88" }}>
-              {filterUrlOnly ? "by URL" : "by URL & body"}
-            </Text>
-          </TouchableOpacity>
-        )}
       </View>
       {!filter &&
         !!props.maxNumOfApiToStore &&
@@ -179,9 +168,7 @@ export default (props) => {
         showsVerticalScrollIndicator
         sections={apis
           .filter((a) =>
-            !filter || filterUrlOnly
-              ? a.request.url.includes(filter)
-              : JSON.stringify(a).toLowerCase().includes(filter)
+            !filter || JSON.stringify(a).toLowerCase().includes(filter)
           )
           .map((data) => ({ data: [data], id: data.id }))}
         renderItem={(i) =>
