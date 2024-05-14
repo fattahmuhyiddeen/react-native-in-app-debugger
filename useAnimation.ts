@@ -14,6 +14,7 @@ export default (defaultBadgeHeight) => {
   const badgeWidth = useRef(new Animated.Value(defaultBadgeWidth)).current;
   const { width, height } = useWindowDimensions();
   const [isOpen, setIsOpen] = useState(false);
+  const [shouldShowDetails, setShouldShowDetails] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -28,7 +29,6 @@ export default (defaultBadgeHeight) => {
       hideSubscription.remove();
     };
   }, [isOpen]);
-
 
   const panResponder = useRef(
     PanResponder.create({
@@ -57,6 +57,7 @@ export default (defaultBadgeHeight) => {
   }, [defaultBadgeHeight]);
 
   useEffect(() => {
+    setTimeout(() => setShouldShowDetails(isOpen), isOpen ? 200 : 0);
     Animated.spring(position, { toValue: isOpen ? { x: 0, y: 0 } : cachePosition.current, ...und }).start();
     Animated.spring(borderRadius, { toValue: isOpen ? 0 : defaultBorderRadius, ...und }).start();
     Animated.spring(badgeHeight, { toValue: isOpen ? height : defaultBadgeHeight, ...und }).start();
@@ -72,5 +73,6 @@ export default (defaultBadgeHeight) => {
     isOpen,
     setIsOpen,
     borderRadius,
+    shouldShowDetails,
   };
 };

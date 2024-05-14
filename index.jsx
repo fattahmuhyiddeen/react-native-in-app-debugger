@@ -78,6 +78,7 @@ export default ({
     isOpen,
     panResponder,
     setIsOpen,
+    shouldShowDetails,
   } = useAnimation(badgeHeight);
   return (
     <Animated.View
@@ -92,7 +93,7 @@ export default ({
       }}
       {...(isOpen ? {} : panResponder.panHandlers)}
     >
-      {!isOpen ? (
+      {!shouldShowDetails ? (
         <TouchableOpacity
           onPress={() => setIsOpen(true)}
           style={styles.box}
