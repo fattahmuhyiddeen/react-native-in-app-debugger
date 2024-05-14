@@ -86,7 +86,7 @@ export default ({
         transform: [{ translateX }, { translateY }],
         position: "absolute",
         borderRadius,
-        backgroundColor: "#000000" + (isOpen ? "dd" : "bb"),
+        backgroundColor: "#000000" + (isOpen ? "ee" : "bb"),
         height,
         width,
         borderTopRightRadius: numPendingApiCalls || errors ? 0 : undefined,
