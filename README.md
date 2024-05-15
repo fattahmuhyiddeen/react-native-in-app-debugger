@@ -93,3 +93,7 @@ If this library is installed, when user expand any selected API, there will be a
 
 <img width="535" alt="image" src="https://github.com/fattahmuhyiddeen/react-native-in-app-debugger/assets/24792201/d4f58ee3-e553-4cae-91df-ba7e26d8cd70">
 
+
+#### React Native Async Storage (https://www.npmjs.com/package/@react-native-async-storage/async-storage)
+
+If this library is installed, the blacklist will be persisted
