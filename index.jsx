@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Animated,
   StyleSheet,
@@ -8,11 +8,19 @@ import {
   Dimensions,
 } from "react-native";
 import Text from "./Text";
+
 let DeviceInfo;
 try {
   DeviceInfo = require("react-native-device-info");
 } catch (error) {
   // console.error("Error importing DeviceInfo:", error);
+}
+
+let LocalStorage;
+try {
+  LocalStorage = require("@react-native-async-storage/async-storage/src").default;
+} catch (error) {
+  // console.error("Error importing LocalStorage:", error);
 }
 
 import useAnimation from "./useAnimation";
@@ -50,7 +58,33 @@ export default ({
   labels = [],
   interceptResponse
 }) => {
-  const [blacklists, setBlacklists] = useState([]);
+  const [blacklists, setB] = useState([]);
+
+  const setBlacklists = d => {
+    if (!d) {
+      setB([]);
+      LocalStorage?.removeItem('in-app-debugger-blacklist');
+    } else {
+      setB(v => {
+        const newValue = Array.isArray(d) ? d : [...v, d];
+        LocalStorage?.setItem('in-app-debugger-blacklist', JSON.stringify(newValue));
+        return newValue;
+      });
+    }
+  }
+
+  if (LocalStorage) {
+    useEffect(() => {
+      setTimeout(() => {
+        LocalStorage.getItem('in-app-debugger-blacklist').then(d => {
+          if (d) {
+            setBlacklists(JSON.parse(d));
+          }
+        });
+      }, 4000);
+    },[]);
+  }
+
   const { apis, clear } = useApiInterceptor(maxNumOfApiToStore, blacklists, interceptResponse);
 
   const [tab, setTab] = useState("api");

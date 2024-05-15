@@ -140,7 +140,7 @@ export default (props) => {
             style={{ padding: 5, backgroundColor: "white", borderRadius: 5 }}
             onPress={() =>
               Alert.alert("Are you sure", "You want to clear all blacklists", [
-                { text: "Clear", onPress: () => props.setBlacklists([]), style: "cancel" },
+                { text: "Clear", onPress: () => props.setBlacklists(), style: "cancel" },
                 { text: "Cancel" },
               ])
             }
@@ -242,7 +242,7 @@ export default (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     Alert.alert("Are you sure", `You want to blacklist: \n\n(${item.request.method}) ${item.request.url} \n\nwhere all history logs for this API will be removed and all future request for this API will not be recorded?`, [
-                      { text: "Blacklist", onPress: () => props.setBlacklists(v => [...v, item.request]), style: "cancel" },
+                      { text: "Blacklist", onPress: () => props.setBlacklists({method: item.request.method, url: item.request.url}), style: "cancel" },
                       { text: "Cancel" },
                     ])
                   }}
