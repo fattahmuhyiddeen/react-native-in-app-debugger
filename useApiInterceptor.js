@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import XHRInterceptor from "react-native/Libraries/Network/XHRInterceptor.js";
+import { useEffect, useState } from 'react';
+import XHRInterceptor from 'react-native/Libraries/Network/XHRInterceptor.js';
 
 const filterNonBusinessRelatedAPI = true;
 
 const shouldExclude = (url, method) =>
-  ["HEAD"].includes(method) ||
-  url.includes("codepush") ||
-  url.includes("localhost") ||
-  url.includes("applicationinsights.azure.com");
+  ['HEAD'].includes(method) ||
+  url.includes('codepush') ||
+  url.includes('localhost') ||
+  url.includes('applicationinsights.azure.com');
 
 const parse = (data) => {
   try {
@@ -19,13 +19,14 @@ const parse = (data) => {
 
 export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
   const [apis, setApis] = useState([]);
+  const [bookmarks, setBookmarks] = useState({});
 
   const makeRequest = (data) => {
-    if (blacklists.some(b => b.url === data.url && b.method === data.method)) return;
+    if (blacklists.some((b) => b.url === data.url && b.method === data.method)) return;
     const date = new Date();
     let hour = date.getHours();
-    const minute = (date.getMinutes() + "").padStart(2, "0");
-    const second = (date.getSeconds() + "").padStart(2, "0");
+    const minute = (date.getMinutes() + '').padStart(2, '0');
+    const second = (date.getSeconds() + '').padStart(2, '0');
 
     const request = {
       ...data,
@@ -42,10 +43,8 @@ export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
   };
 
   useEffect(() => {
-    setApis((v) => (
-      v.filter(v => !blacklists.some(b => b.url === v.request.url && b.method === v.request.method))
-    ))
-  }, [blacklists])
+    setApis((v) => v.filter((v) => !blacklists.some((b) => b.url === v.request.url && b.method === v.request.method)));
+  }, [blacklists]);
 
   const receiveResponse = (data) => {
     const error = data.status < 200 || data.status >= 400;
@@ -54,12 +53,7 @@ export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
       const oldData = [...v];
       for (let i = 0; i < oldData.length; i++) {
         const old = oldData[i];
-        if (
-          old.response ||
-          old.request.url !== data.config.url ||
-          old.request.method !== data.config.method
-        )
-          continue;
+        if (old.response || old.request.url !== data.config.url || old.request.method !== data.config.method) continue;
 
         oldData[i].response = {
           ...data,
@@ -77,7 +71,7 @@ export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
     XHRInterceptor.enableInterception();
     // console.log('API interceptor status', XHRInterceptor.isInterceptorEnabled());
     XHRInterceptor.setSendCallback((...obj) => {
-      obj[1].responseType = "text";
+      obj[1].responseType = 'text';
       const data = parse(obj[0]);
 
       const { _method: method, _url: url, _headers: headers } = obj[1];
@@ -112,5 +106,5 @@ export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
     });
   }, []);
 
-  return { apis, clear: () => setApis([]) };
+  return { apis, clear: () => setApis([]), bookmarks, setBookmarks };
 };

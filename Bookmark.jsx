@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-export default ({ size = 10, color = '#333333', onPress }) => {
+export default ({ size = 10, color = '#222', onPress }) => {
   const tristyle = { borderRightWidth: size / 2, borderTopWidth: size / 2, borderTopColor: color };
   return (
     <View>
