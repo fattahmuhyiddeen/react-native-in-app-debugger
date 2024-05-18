@@ -28,7 +28,7 @@ export default (props) => {
       <View style={styles.container}>
         {!!apis.length && !filter && (
           <TouchableOpacity
-            style={{ padding: 5, backgroundColor: 'white', borderRadius: 5 }}
+            style={styles.actionButton}
             onPress={() =>
               Alert.alert('Are you sure', 'You want to clear all logs', [
                 { text: 'Delete', onPress: props.clear, style: 'cancel' },
@@ -55,7 +55,7 @@ export default (props) => {
         )}
         {!!props.blacklists.length && !filter && (
           <TouchableOpacity
-            style={{ padding: 5, backgroundColor: 'white', borderRadius: 5 }}
+            style={styles.actionButton}
             onPress={() =>
               Alert.alert('Are you sure', 'You want to clear all blacklists', [
                 { text: 'Clear', onPress: () => props.setBlacklists(), style: 'cancel' },
@@ -66,13 +66,19 @@ export default (props) => {
             <Text style={{ color: 'black', fontSize: 10 }}>Clear {props.blacklists.length} Blacklists</Text>
           </TouchableOpacity>
         )}
-
+        {!!Object.keys(props.bookmarks).length && (
+          <>
+            <TouchableOpacity style={styles.actionButton} onPress={() => props.setBookmarks({})}>
+              <Text style={{ color: 'black', fontSize: 10 }}>Clear bookmarks</Text>
+            </TouchableOpacity>
+          </>
+        )}
         <TextInput
           value={filter}
           placeholder='Filter...'
           clearButtonMode='always'
           placeholderTextColor='grey'
-          style={{ paddingHorizontal: 5, color: 'white', flex: 1 }}
+          style={styles.textInput}
           onChangeText={(t) => setFilter(t.toLowerCase())}
         />
       </View>
@@ -178,6 +184,7 @@ export default (props) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     paddingLeft: 5,
     alignItems: 'center',
     gap: 5,
@@ -200,4 +207,6 @@ const styles = StyleSheet.create({
     elevation: 10,
     zIndex: 99,
   },
+  textInput: { paddingHorizontal: 5, color: 'white', flex: 1, minWidth: 100 },
+  actionButton: { padding: 5, backgroundColor: 'white', borderRadius: 5 },
 });

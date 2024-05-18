@@ -21,6 +21,19 @@ export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
   const [apis, setApis] = useState([]);
   const [bookmarks, setBookmarks] = useState({});
 
+  useEffect(() => {
+    setBookmarks((v) => {
+      const oldV = { ...v };
+      const bookmarkkeys = Object.keys(oldV);
+      for (let i = 0; i < bookmarkkeys.length; i++) {
+        if (!apis.some(({ id }) => id === bookmarkkeys[i])) {
+          delete oldV[bookmarkkeys[i]];
+        }
+      }
+      return oldV;
+    });
+  }, [apis]);
+
   const makeRequest = (data) => {
     if (blacklists.some((b) => b.url === data.url && b.method === data.method)) return;
     const date = new Date();
