@@ -3,8 +3,9 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native';
 
 export default ({ size = 10, color = '#222', ...rest }) => {
   const tristyle = { borderRightWidth: size / 2, borderTopWidth: size / 2, borderTopColor: color };
+  const Component = rest.onPress ? TouchableOpacity : View;
   return (
-    <TouchableOpacity {...rest} style={[styles.container, { height: size + size / 2 }]}>
+    <Component {...rest} style={[styles.container, { height: size + size / 2 }]}>
       <View style={{ transform: [{ scale: 0.3 }] }}>
         <View style={{ width: size, height: size, backgroundColor: color }} />
         <View style={{ flexDirection: 'row' }}>
@@ -12,7 +13,7 @@ export default ({ size = 10, color = '#222', ...rest }) => {
           <View style={[styles.triangleCorner, tristyle, { transform: [{ rotate: '90deg' }] }]} />
         </View>
       </View>
-    </TouchableOpacity>
+    </Component>
   );
 };
 

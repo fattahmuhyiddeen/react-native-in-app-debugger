@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-export default ({ size = 20, color = 'white', onPress }) => {
+const height = 3;
+export default ({ size = 20, color = 'white', ...rest }) => {
   const panelStyle = { top: size / 2, width: size, backgroundColor: color };
+  const Component = rest.onPress ? TouchableOpacity : View;
   return (
-    <TouchableOpacity
-      onPress={onPress}
+    <Component
+      {...rest}
       style={{
         width: size,
         height: size,
@@ -13,16 +15,17 @@ export default ({ size = 20, color = 'white', onPress }) => {
       }}
     >
       <View style={{ width: size, height: size, transform: [{ scale: 0.5 }] }}>
-        <View style={[styles.panel, panelStyle, { transform: [{ rotate: '45deg' }] }]} />
-        <View style={[styles.panel, panelStyle, { transform: [{ rotate: '-45deg' }] }]} />
+        <View style={[styles.panel, panelStyle, { transform: [...styles.panel.transform, { rotate: '45deg' }] }]} />
+        <View style={[styles.panel, panelStyle, { transform: [...styles.panel.transform, { rotate: '-45deg' }] }]} />
       </View>
-    </TouchableOpacity>
+    </Component>
   );
 };
 
 const styles = StyleSheet.create({
   panel: {
-    height: 3,
+    height,
+    transform: [{ translateY: -height / 2 }],
     position: 'absolute',
   },
 });

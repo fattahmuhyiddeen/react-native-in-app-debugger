@@ -3,6 +3,7 @@ import { SectionList, TextInput, View, Alert, StyleSheet, TouchableOpacity } fro
 import Text from '../Text';
 import Highlight from '../Highlight';
 import Bookmark from '../Bookmark';
+import X from '../X';
 import getRandomBrightColor from '../utils/getRandomBrightColor';
 import { MAX_URL_LENGTH } from './Row';
 let Clipboard;
@@ -14,10 +15,17 @@ try {
 
 import Row from './Row';
 
+const BlacklistIcon = () => (
+  <View style={{ borderRadius: 100, backgroundColor: 'black' }}>
+    <X size={12} />
+  </View>
+);
+
 const isError = (a) => a.response?.status < 200 || a.response?.status >= 400;
 export default (props) => {
   const [filter, setFilter] = useState('');
   const [errorOnly, setErrorOnly] = useState(false);
+  const [showBookmarkOnly, setShowBookmarkOnly] = useState(false);
   const [expands, setExpands] = useState({});
   const apis = props.apis.filter((a) => !errorOnly || isError(a));
 
@@ -63,13 +71,19 @@ export default (props) => {
               ])
             }
           >
-            <Text style={{ color: 'black', fontSize: 10 }}>Clear {props.blacklists.length} Blacklists</Text>
+            <Text style={{ color: 'black', fontSize: 10 }}>Clear {props.blacklists.length}</Text>
+            <BlacklistIcon />
           </TouchableOpacity>
         )}
         {!!Object.keys(props.bookmarks).length && (
           <>
+            <TouchableOpacity style={styles.actionButton} onPress={() => setShowBookmarkOnly((v) => !v)}>
+              <Bookmark size={7} />
+              <Text style={{ color: 'black', fontSize: 10 }}>{showBookmarkOnly ? '& others' : 'Only'}</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton} onPress={() => props.setBookmarks({})}>
-              <Text style={{ color: 'black', fontSize: 10 }}>Clear bookmarks</Text>
+              <Text style={{ color: 'black', fontSize: 10 }}>Clear {Object.keys(props.bookmarks).length}</Text>
+              <Bookmark size={7} />
             </TouchableOpacity>
           </>
         )}
@@ -91,6 +105,7 @@ export default (props) => {
         showsVerticalScrollIndicator
         sections={apis
           .filter((a) => !filter || JSON.stringify(a).toLowerCase().includes(filter))
+          .filter((a) => !showBookmarkOnly || props.bookmarks[a.id])
           .map((data) => ({ data: [data], id: data.id }))}
         renderItem={(i) => (expands[i.item.id] ? <Row {...i} filter={filter} /> : <View style={{ height: 20 }} />)}
         renderSectionHeader={({ section: { data } }) => {
@@ -170,7 +185,7 @@ export default (props) => {
                   }}
                   style={styles.actionButton}
                 >
-                  <Text style={{ color: 'black', fontSize: 10 }}>Blacklist</Text>
+                  <BlacklistIcon />
                 </TouchableOpacity>
               </View>
             </View>
@@ -189,7 +204,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
   },
-  actionButton: { backgroundColor: 'white', borderRadius: 5, padding: 4 },
+  actionButton: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 3,
+  },
   rowHeader: {
     flexDirection: 'row',
     gap: 5,
@@ -208,5 +231,4 @@ const styles = StyleSheet.create({
     zIndex: 99,
   },
   textInput: { paddingHorizontal: 5, color: 'white', flex: 1, minWidth: 100 },
-  actionButton: { padding: 5, backgroundColor: 'white', borderRadius: 5 },
 });
