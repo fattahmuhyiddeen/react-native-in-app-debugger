@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import Text from "./Text";
+import X from './X';
 
 let DeviceInfo;
 try {
@@ -188,9 +189,7 @@ export default ({
                   );
                 })}
             </View>
-            <TouchableOpacity onPress={() => setIsOpen(false)}>
-              <Text style={styles.close}>X</Text>
-            </TouchableOpacity>
+            <X onPress={() => setIsOpen(false)} />
           </View>
           {tab === "variables" && !!variables && (
             <Variables variables={variables} />
@@ -224,12 +223,6 @@ const styles = StyleSheet.create({
   badge: {
     padding: 3,
     borderRadius: 999,
-  },
-  close: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
-    paddingHorizontal: 10,
   },
   labelContainer: {
     backgroundColor: "black",
