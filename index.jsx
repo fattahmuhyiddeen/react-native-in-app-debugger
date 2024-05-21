@@ -57,7 +57,8 @@ export default ({
   version = v,
   maxNumOfApiToStore = 0,
   labels = [],
-  interceptResponse
+  interceptResponse,
+  tabs = [],
 }) => {
   const [blacklists, setB] = useState([]);
 
@@ -116,6 +117,8 @@ export default ({
     setIsOpen,
     shouldShowDetails,
   } = useAnimation(badgeHeight);
+
+  const CustomTabComponent = tabs.find(t => tab === t.title)?.component;
   return (
     <Animated.View
       style={{
@@ -163,7 +166,7 @@ export default ({
           <View style={{ flexDirection: "row", padding: 5 }}>
             <View style={{ flex: 1, flexDirection: "row" }}>
               {!!variables &&
-                ["api", "variables"].map((t) => {
+                ["api", "variables", ...tabs.map(t => t.title)].map((t) => {
                   const isSelected = t === tab;
                   return (
                     <TouchableOpacity
@@ -200,6 +203,7 @@ export default ({
               {...restApiInterceptor}
             />
           )}
+          {!!CustomTabComponent && <CustomTabComponent />}
         </SafeAreaView>
       )}
     </Animated.View>
