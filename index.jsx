@@ -28,6 +28,7 @@ import useAnimation from "./useAnimation";
 import Variables from "./Variables";
 import Api from "./Api";
 import useApiInterceptor from "./useApiInterceptor";
+import useStateRef from "./useStateRef";
 
 const dimension = Dimensions.get("window");
 
@@ -60,7 +61,7 @@ export default ({
   interceptResponse,
   tabs = [],
 }) => {
-  const [blacklists, setB] = useState([]);
+  const [blacklists, setB, blacklistRef] = useStateRef([]);
 
   const setBlacklists = d => {
     if (!d) {
@@ -87,7 +88,7 @@ export default ({
     },[]);
   }
 
-  const { apis, ...restApiInterceptor } = useApiInterceptor(maxNumOfApiToStore, blacklists, interceptResponse);
+  const { apis, ...restApiInterceptor } = useApiInterceptor(maxNumOfApiToStore, blacklists, interceptResponse, blacklistRef);
 
   const [tab, setTab] = useState("api");
 

@@ -17,7 +17,7 @@ const parse = (data) => {
   }
 };
 
-export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
+export default (maxNumOfApiToStore, blacklists, interceptResponse, blacklistRef) => {
   const [apis, setApis] = useState([]);
   const [bookmarks, setBookmarks] = useState({});
 
@@ -35,7 +35,7 @@ export default (maxNumOfApiToStore, blacklists, interceptResponse) => {
   }, [apis]);
 
   const makeRequest = (data) => {
-    if (blacklists.some((b) => b.url === data.url && b.method === data.method)) return;
+    if (blacklistRef.current.some((b) => b.url === data.url && b.method === data.method)) return;
     const date = new Date();
     let hour = date.getHours();
     const minute = (date.getMinutes() + '').padStart(2, '0');
