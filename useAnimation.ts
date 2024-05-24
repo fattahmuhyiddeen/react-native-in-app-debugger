@@ -9,7 +9,7 @@ const touchThreshold = 10;
 export default (defaultBadgeHeight) => {
   const cachePosition = useRef({ x: 0, y: 50 });
   const position = useRef<any>(new Animated.ValueXY(cachePosition.current)).current;
-  const borderRadius = useRef(new Animated.Value(defaultBorderRadius)).current;
+  // const borderRadius = useRef(new Animated.Value(defaultBorderRadius)).current;
   const badgeHeight = useRef(new Animated.Value(defaultBadgeHeight)).current;
   const badgeWidth = useRef(new Animated.Value(defaultBadgeWidth)).current;
   const { width, height } = useWindowDimensions();
@@ -59,7 +59,7 @@ export default (defaultBadgeHeight) => {
   useEffect(() => {
     setTimeout(() => setShouldShowDetails(isOpen), isOpen ? 200 : 0);
     Animated.spring(position, { toValue: isOpen ? { x: 0, y: 0 } : cachePosition.current, ...und }).start();
-    Animated.spring(borderRadius, { toValue: isOpen ? 0 : defaultBorderRadius, ...und }).start();
+    // Animated.spring(borderRadius, { toValue: isOpen ? 0 : defaultBorderRadius, ...und }).start();
     Animated.spring(badgeHeight, { toValue: isOpen ? height : defaultBadgeHeight, ...und }).start();
     Animated.spring(badgeWidth, { toValue: isOpen ? width : defaultBadgeWidth, ...und }).start();
   }, [isOpen]);
@@ -72,7 +72,7 @@ export default (defaultBadgeHeight) => {
     translateY: position.y,
     isOpen,
     setIsOpen,
-    borderRadius,
+    borderRadius: isOpen ? 0 : defaultBorderRadius,
     shouldShowDetails,
   };
 };
