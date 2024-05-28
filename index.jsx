@@ -199,7 +199,7 @@ export default ({
                           }}
                         >
                           {t}
-                          {!i && apis.length && <Text> ({apis.length})</Text>}
+                          {!i && !!apis.length && <Text> ({apis.length})</Text>}
                         </Text>
                       </TouchableOpacity>
                     );
