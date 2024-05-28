@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import Text from "./Text";
-import X from './X';
+import X from "./X";
 
 let DeviceInfo;
 try {
@@ -19,7 +19,8 @@ try {
 
 let LocalStorage;
 try {
-  LocalStorage = require("@react-native-async-storage/async-storage/src").default;
+  LocalStorage =
+    require("@react-native-async-storage/async-storage/src").default;
 } catch (error) {
   // console.error("Error importing LocalStorage:", error);
 }
@@ -63,32 +64,40 @@ export default ({
 }) => {
   const [blacklists, setB, blacklistRef] = useStateRef([]);
 
-  const setBlacklists = d => {
+  const setBlacklists = (d) => {
     if (!d) {
       setB([]);
-      LocalStorage?.removeItem('in-app-debugger-blacklist');
+      LocalStorage?.removeItem("in-app-debugger-blacklist");
     } else {
-      setB(v => {
+      setB((v) => {
         const newValue = Array.isArray(d) ? d : [...v, d];
-        LocalStorage?.setItem('in-app-debugger-blacklist', JSON.stringify(newValue));
+        LocalStorage?.setItem(
+          "in-app-debugger-blacklist",
+          JSON.stringify(newValue)
+        );
         return newValue;
       });
     }
-  }
+  };
 
   if (LocalStorage) {
     useEffect(() => {
       setTimeout(() => {
-        LocalStorage.getItem('in-app-debugger-blacklist').then(d => {
+        LocalStorage.getItem("in-app-debugger-blacklist").then((d) => {
           if (d) {
             setBlacklists(JSON.parse(d));
           }
         });
       }, 4000);
-    },[]);
+    }, []);
   }
 
-  const { apis, ...restApiInterceptor } = useApiInterceptor(maxNumOfApiToStore, blacklists, interceptResponse, blacklistRef);
+  const { apis, ...restApiInterceptor } = useApiInterceptor(
+    maxNumOfApiToStore,
+    blacklists,
+    interceptResponse,
+    blacklistRef
+  );
 
   const [tab, setTab] = useState("api");
 
@@ -119,7 +128,7 @@ export default ({
     shouldShowDetails,
   } = useAnimation(badgeHeight);
 
-  const CustomTabComponent = tabs.find(t => tab === t.title)?.component;
+  const CustomTabComponent = tabs.find((t) => tab === t.title)?.component;
   return (
     <Animated.View
       style={{
@@ -164,34 +173,38 @@ export default ({
               <Label key={l}>{l}</Label>
             ))}
           </View>
-          <View style={{ flexDirection: "row", padding: 5 }}>
+          <View style={{ flexDirection: "row", padding: 5, gap: 6 }}>
             <View style={{ flex: 1, flexDirection: "row" }}>
               {!!variables &&
-                ["api", "variables", ...tabs.map(t => t.title)].map((t) => {
-                  const isSelected = t === tab;
-                  return (
-                    <TouchableOpacity
-                      onPress={() => setTab(t)}
-                      activeOpacity={isSelected ? 1 : 0.7}
-                      key={t}
-                      style={{
-                        flex: 1,
-                        borderBottomWidth: +isSelected,
-                        borderColor: "white",
-                      }}
-                    >
-                      <Text
+                ["api", "variables", ...tabs.map((t) => t.title)].map(
+                  (t, i) => {
+                    const isSelected = t === tab;
+                    return (
+                      <TouchableOpacity
+                        onPress={() => setTab(t)}
+                        activeOpacity={isSelected ? 1 : 0.7}
+                        key={t}
                         style={{
-                          color: "white",
-                          opacity: isSelected ? 1 : 0.5,
-                          textAlign: "center",
+                          flex: 1,
+                          borderBottomWidth: +isSelected,
+                          borderColor: "white",
                         }}
                       >
-                        {t.toUpperCase()}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
+                        <Text
+                          style={{
+                            color: "white",
+                            opacity: isSelected ? 1 : 0.5,
+                            textAlign: "center",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {t}
+                          {!i && apis.length && <Text> ({apis.length})</Text>}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  }
+                )}
             </View>
             <X onPress={() => setIsOpen(false)} />
           </View>
@@ -200,7 +213,7 @@ export default ({
           )}
           {tab === "api" && (
             <Api
-              {...{apis, setBlacklists, blacklists, maxNumOfApiToStore}}
+              {...{ apis, setBlacklists, blacklists, maxNumOfApiToStore }}
               {...restApiInterceptor}
             />
           )}
