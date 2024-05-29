@@ -44,7 +44,7 @@ export default (props) => {
               ])
             }
           >
-            <Text style={{ color: 'black', fontSize: 10 }}>Clear {props.apis.length} APIs</Text>
+            <Text style={{ color: 'black', fontSize: 10 }}>Clear logs</Text>
           </TouchableOpacity>
         )}
         {hasError && !filter && (
