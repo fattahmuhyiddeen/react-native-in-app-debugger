@@ -5,7 +5,7 @@ const filterNonBusinessRelatedAPI = true;
 
 const shouldExclude = (url, method) =>
   ['HEAD'].includes(method) ||
-  url.includes('codepush') ||
+  // url.includes('codepush') ||
   url.includes('localhost') ||
   url.includes('applicationinsights.azure.com');
 
