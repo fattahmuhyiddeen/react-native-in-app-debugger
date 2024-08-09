@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
-  Dimensions,
+  useWindowDimensions,
 } from "react-native";
 import Text from "./Text";
 import X from "./X";
@@ -31,7 +31,7 @@ import Api from "./Api";
 import useApiInterceptor from "./useApiInterceptor";
 import useStateRef from "./useStateRef";
 
-const dimension = Dimensions.get("window");
+const fontSize = 7;
 
 let v = "";
 let modelOs;
@@ -63,6 +63,7 @@ export default ({
   tabs = [],
 }) => {
   const [blacklists, setB, blacklistRef] = useStateRef([]);
+  const dimension = useWindowDimensions();
 
   const setBlacklists = (d) => {
     if (!d) {
@@ -103,7 +104,7 @@ export default ({
 
   const errors = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
-  let badgeHeight = 13;
+  let badgeHeight = fontSize + 7;
 
   const displayLabels = [
     (!!env || !!version) && (env || "") + (env ? " " : "") + version,
@@ -114,7 +115,7 @@ export default ({
     ...labels,
   ].filter(Boolean);
 
-  displayLabels.forEach(() => (badgeHeight += 7));
+  displayLabels.forEach(() => (badgeHeight += fontSize + 1));
 
   const {
     translateX,
@@ -151,14 +152,14 @@ export default ({
           <View style={styles.badgeContainer}>
             {!!numPendingApiCalls && (
               <View style={[styles.badge, { backgroundColor: "orange" }]}>
-                <Text style={{ fontSize: 6, color: "white" }}>
+                <Text style={{ fontSize, color: "white" }}>
                   {numPendingApiCalls}
                 </Text>
               </View>
             )}
             {!!errors && (
               <View style={[styles.badge, { backgroundColor: "red" }]}>
-                <Text style={{ fontSize: 6, color: "white" }}>{errors}</Text>
+                <Text style={{ fontSize, color: "white" }}>{errors}</Text>
               </View>
             )}
           </View>
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  label: { color: "white", textAlign: "center", fontSize: 6 },
+  label: { color: "white", textAlign: "center", fontSize: fontSize + 1 },
   badgeContainer: {
     gap: 3,
     flexDirection: "row",

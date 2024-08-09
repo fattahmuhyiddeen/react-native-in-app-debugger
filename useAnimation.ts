@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Keyboard, PanResponder, useWindowDimensions } from 'react-native';
 
-const defaultBadgeWidth = 80;
+const defaultBadgeWidth = 110;
 const defaultBorderRadius = 10;
 const und = { useNativeDriver: false };
 const touchThreshold = 10;
