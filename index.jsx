@@ -104,7 +104,7 @@ export default ({
 
   const errors = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
-  let badgeHeight = fontSize + 7;
+  let badgeHeight = fontSize * 3;
 
   const displayLabels = [
     (!!env || !!version) && (env || "") + (env ? " " : "") + version,
