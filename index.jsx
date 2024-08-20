@@ -30,6 +30,7 @@ import Variables from "./Variables";
 import Api from "./Api";
 import useApiInterceptor from "./useApiInterceptor";
 import useStateRef from "./useStateRef";
+import Libs from "react-native-in-app-debugger/Libs";
 
 const fontSize = 7;
 
@@ -176,8 +177,7 @@ export default ({
           </View>
           <View style={{ flexDirection: "row", padding: 5, gap: 6 }}>
             <View style={{ flex: 1, flexDirection: "row" }}>
-              {!!variables &&
-                ["api", "variables", ...tabs.map((t) => t.title)].map(
+              {["api", !!variables && "variables", "libs", ...tabs.map((t) => t.title)].filter(Boolean).map(
                   (t, i) => {
                     const isSelected = t === tab;
                     return (
@@ -212,6 +212,7 @@ export default ({
           {tab === "variables" && !!variables && (
             <Variables variables={variables} />
           )}
+          {tab === "libs" && <Libs />}
           {tab === "api" && (
             <Api
               {...{ apis, setBlacklists, blacklists, maxNumOfApiToStore }}
