@@ -177,37 +177,42 @@ export default ({
           </View>
           <View style={{ flexDirection: "row", padding: 5, gap: 6 }}>
             <View style={{ flex: 1, flexDirection: "row" }}>
-              {["api", !!variables && "variables", "libs", ...tabs.map((t) => t.title)].filter(Boolean).map(
-                  (t, i) => {
-                    const isSelected = t === tab;
-                    return (
-                      <TouchableOpacity
-                        onPress={() => setTab(t)}
-                        activeOpacity={isSelected ? 1 : 0.7}
-                        key={t}
+              {[
+                "api",
+                !!variables && "variables",
+                "libs",
+                ...tabs.map((t) => t.title),
+              ]
+                .filter(Boolean)
+                .map((t, i) => {
+                  const isSelected = t === tab;
+                  return (
+                    <TouchableOpacity
+                      onPress={() => setTab(t)}
+                      activeOpacity={isSelected ? 1 : 0.7}
+                      key={t}
+                      style={{
+                        flex: 1,
+                        borderBottomWidth: +isSelected,
+                        borderColor: "white",
+                      }}
+                    >
+                      <Text
                         style={{
-                          flex: 1,
-                          borderBottomWidth: +isSelected,
-                          borderColor: "white",
+                          color: "white",
+                          opacity: isSelected ? 1 : 0.5,
+                          textAlign: "center",
+                          textTransform: "uppercase",
                         }}
                       >
-                        <Text
-                          style={{
-                            color: "white",
-                            opacity: isSelected ? 1 : 0.5,
-                            textAlign: "center",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          {t}
-                          {!i && !!apis.length && <Text> ({apis.length})</Text>}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  }
-                )}
+                        {t}
+                        {!i && !!apis.length && <Text> ({apis.length})</Text>}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
             </View>
-            <X onPress={() => setIsOpen(false)} />
+            <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
           </View>
           {tab === "variables" && !!variables && (
             <Variables variables={variables} />
