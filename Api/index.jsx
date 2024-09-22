@@ -15,7 +15,7 @@ import getRandomBrightColor from "../utils/getRandomBrightColor";
 import { MAX_URL_LENGTH } from "./Row";
 let Clipboard;
 try {
-  Clipboard = require("@react-native-clipboard/clipboard")?.default;
+  Clipboard = require("@react-native-clipboard/clipboard").default;
 } catch (error) {
   // console.error("Error importing Clipboard:", error);
 }
@@ -223,7 +223,7 @@ export default (props) => {
                     {isExpand ? "Hide" : "Show"}
                   </Text>
                 </TouchableOpacity>
-                {!!Clipboard && (
+                {!!Clipboard?.setString && (
                   <TouchableOpacity
                     onPress={() => {
                       const content = { ...item };
