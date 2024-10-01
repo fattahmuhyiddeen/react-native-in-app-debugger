@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Keyboard, PanResponder, useWindowDimensions } from 'react-native';
 
+let LocalStorage;
+try {
+  LocalStorage = require('@react-native-async-storage/async-storage/src').default;
+} catch (error) {
+  // console.error("Error importing LocalStorage:", error);
+}
+
 const defaultBadgeWidth = 110;
 const defaultBorderRadius = 10;
 const und = { useNativeDriver: false };
@@ -9,12 +16,27 @@ const touchThreshold = 10;
 export default (defaultBadgeHeight) => {
   const cachePosition = useRef({ x: 0, y: 50 });
   const position = useRef<any>(new Animated.ValueXY(cachePosition.current)).current;
+  // initially I want to animate border radius, but user dont really notice, therefore I removed unnecessary animation
   // const borderRadius = useRef(new Animated.Value(defaultBorderRadius)).current;
   const badgeHeight = useRef(new Animated.Value(defaultBadgeHeight)).current;
   const badgeWidth = useRef(new Animated.Value(defaultBadgeWidth)).current;
   const { width, height } = useWindowDimensions();
   const [isOpen, setIsOpen] = useState(false);
   const [shouldShowDetails, setShouldShowDetails] = useState(false);
+
+  const move = (toValue) => {
+    cachePosition.current = toValue;
+    Animated.spring(position, { ...und, toValue }).start();
+    LocalStorage?.setItem('in-app-debugger-position', JSON.stringify(toValue));
+  };
+
+  if (LocalStorage) {
+    useEffect(() => {
+      LocalStorage.getItem('in-app-debugger-position').then((d) => {
+        if (d) move(JSON.parse(d));
+      });
+    }, []);
+  }
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -43,11 +65,10 @@ export default (defaultBadgeHeight) => {
       onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], und),
       onPanResponderRelease: (_, g) => {
         position.flattenOffset();
-        cachePosition.current = {
+        move({
           x: g.moveX > width / 2 ? width - defaultBadgeWidth : 0,
           y: Math.min(g.moveY, height - defaultBadgeHeight),
-        };
-        Animated.spring(position, { ...und, toValue: cachePosition.current }).start();
+        });
       },
     }),
   ).current;
