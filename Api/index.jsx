@@ -229,8 +229,9 @@ export default (props) => {
                       const content = { ...item };
                       delete content.id;
                       Clipboard.setString(
-                        JSON.stringify(content, undefined, 4)
+                        JSON.stringify(content, undefined, 3)
                       );
+                      Alert.alert('Copied');
                     }}
                     style={styles.actionButton}
                   >
