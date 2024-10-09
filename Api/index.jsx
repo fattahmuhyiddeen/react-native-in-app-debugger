@@ -41,6 +41,7 @@ export default (props) => {
   const [filter, setFilter] = useState("");
   const [errorOnly, setErrorOnly] = useState(false);
   const [showBookmarkOnly, setShowBookmarkOnly] = useState(false);
+  const [wrap, setWrap] = useState(true);
   const [expands, setExpands] = useState({});
   const apis = props.apis.filter((a) => !errorOnly || isError(a));
 
@@ -158,7 +159,7 @@ export default (props) => {
           .map((data) => ({ data: [data], id: data.id }))}
         renderItem={(i) =>
           expands[i.item.id] ? (
-            <Row {...i} filter={filter} />
+            <Row {...i} {...{ wrap, setWrap, filter }} />
           ) : (
             <View style={{ height: 20 }} />
           )
@@ -231,7 +232,7 @@ export default (props) => {
                       Clipboard.setString(
                         JSON.stringify(content, undefined, 3)
                       );
-                      Alert.alert('Copied');
+                      Alert.alert("Copied");
                     }}
                     style={styles.actionButton}
                   >

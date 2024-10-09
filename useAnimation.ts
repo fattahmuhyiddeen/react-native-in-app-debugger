@@ -41,7 +41,7 @@ export default (defaultBadgeHeight) => {
   if (LocalStorage) {
     useEffect(() => {
       LocalStorage.getItem("in-app-debugger-position").then((d) => {
-        if (d) move(JSON.parse(d));
+        if (d && !isOpen) move(JSON.parse(d));
       });
     }, []);
   }
