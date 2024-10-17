@@ -153,7 +153,7 @@ export default ({
         testId={testId}
         accessible
         onPress={() => setDisapear(true)}
-        style={{ height: 1, width: 1 }}
+        style={{ height: 1, width: 1, left: 10 }}
       />
       {!shouldShowDetails ? (
         <TouchableOpacity
