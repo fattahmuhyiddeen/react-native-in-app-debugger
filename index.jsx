@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Text from "./Text";
 import X from "./X";
+const testId = "react-native-in-app-debugger-close-button";
 
 let DeviceInfo;
 try {
@@ -131,6 +132,8 @@ export default ({
   } = useAnimation(badgeHeight);
 
   const CustomTabComponent = tabs.find((t) => tab === t.title)?.component;
+  const [disapear, setDisapear] = useState();
+  if (disapear) return null;
   return (
     <Animated.View
       style={{
@@ -145,6 +148,13 @@ export default ({
       }}
       {...(isOpen ? {} : panResponder.panHandlers)}
     >
+      <Text
+        accessibilityLabel={testId}
+        testId={testId}
+        accessible
+        onPress={() => setDisapear(true)}
+        style={{ height: 1 }}
+      />
       {!shouldShowDetails ? (
         <TouchableOpacity
           onPress={() => setIsOpen(true)}
