@@ -143,7 +143,7 @@ export default ({
         backgroundColor: "#000000" + (isOpen ? "ee" : "bb"),
         height,
         width,
-        zIndex: 9999999999999999999999999999,
+        zIndex: 999999999999999,
         borderTopRightRadius: numPendingApiCalls || errors ? 0 : undefined,
       }}
       {...(isOpen ? {} : panResponder.panHandlers)}
