@@ -1,11 +1,11 @@
 {
   "name": "react-native-in-app-debugger",
-  "version": "1.0.66",
+  "version": "1.0.67",
   "description": "This library's main usage is to be used by Non-Technical testers during UAT, SIT or any testing phase.",
   "main": "index.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm publish --access=public"
+    "pub": "npm publish --access=public"
   },
   "keywords": [
     "debugger"
