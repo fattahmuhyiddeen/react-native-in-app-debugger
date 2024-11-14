@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingLeft: 5,
+    paddingHorizontal: 5,
     alignItems: "center",
     gap: 5,
   },
@@ -305,5 +305,12 @@ const styles = StyleSheet.create({
     elevation: 10,
     zIndex: 99,
   },
-  textInput: { padding: 5, color: "white", flex: 1, minWidth: 100 },
+  textInput: {
+    padding: 5,
+    color: "white",
+    flex: 1,
+    minWidth: 100,
+    backgroundColor: "#333",
+    borderRadius: 8,
+  },
 });

@@ -1,10 +1,18 @@
 import React, { useState } from "react";
-import { FlatList, TextInput, TouchableHighlight } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  TextInput,
+  TouchableHighlight,
+} from "react-native";
 import Text from "./Text";
 import Highlight from "./Highlight";
-import packageJson from '../../package.json';
+import packageJson from "../../package.json";
 
-const libs = Object.entries(packageJson.dependencies).reduce((arr,[name, version])=>[...arr,{name,version}],[]);
+const libs = Object.entries(packageJson.dependencies).reduce(
+  (arr, [name, version]) => [...arr, { name, version }],
+  []
+);
 
 export default () => {
   const [filter, setFilter] = useState("");
@@ -15,7 +23,7 @@ export default () => {
         value={filter}
         placeholder="Filter..."
         placeholderTextColor="grey"
-        style={{ paddingHorizontal: 5, color: "white" }}
+        style={styles.textInput}
         onChangeText={(t) => setFilter(t.toLowerCase())}
         clearButtonMode="always"
       />
@@ -31,14 +39,24 @@ export default () => {
         keyExtractor={(i) => i.name}
         renderItem={({ item }) => (
           <TouchableHighlight underlayColor="#ffffff44" onPress={() => null}>
-          <Text selectable style={{ color: "white", marginVertical: 10 }}>
-            <Highlight text={item.name} filter={filter} />
-            {" : "}
-            <Highlight text={item.version} filter={filter} />
-          </Text>
+            <Text selectable style={{ color: "white", marginVertical: 10 }}>
+              <Highlight text={item.name} filter={filter} />
+              {" : "}
+              <Highlight text={item.version} filter={filter} />
+            </Text>
           </TouchableHighlight>
         )}
       />
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  textInput: {
+    marginHorizontal: 5,
+    padding: 5,
+    color: "white",
+    backgroundColor: "#333",
+    borderRadius: 8,
+  },
+});

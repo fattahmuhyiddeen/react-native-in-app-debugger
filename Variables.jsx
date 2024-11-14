@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FlatList, TextInput } from "react-native";
+import { FlatList, StyleSheet, TextInput } from "react-native";
 import Text from "./Text";
 import Highlight from "./Highlight";
 
@@ -12,7 +12,7 @@ export default ({ variables }) => {
         value={filter}
         placeholder="Filter..."
         placeholderTextColor="grey"
-        style={{ paddingHorizontal: 5, color: "white" }}
+        style={styles.textInput}
         onChangeText={(t) => setFilter(t.toLowerCase())}
         clearButtonMode="always"
       />
@@ -37,3 +37,13 @@ export default ({ variables }) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  textInput: {
+    marginHorizontal: 5,
+    padding: 5,
+    color: "white",
+    backgroundColor: "#333",
+    borderRadius: 8,
+  },
+});
