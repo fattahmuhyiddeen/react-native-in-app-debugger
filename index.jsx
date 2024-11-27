@@ -140,6 +140,8 @@ export default ({
         transform: [{ translateX }, { translateY }],
         position: "absolute",
         borderRadius,
+        borderColor: 'white',
+        borderWidth: .5,
         backgroundColor: "#000000" + (isOpen ? "ee" : "bb"),
         height,
         width,
