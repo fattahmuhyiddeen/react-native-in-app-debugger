@@ -192,7 +192,7 @@ export default ({
             <View style={{ flex: 1, flexDirection: "row" }}>
               {[
                 "api",
-                !!variables && "variables",
+                !!variables && "vars",
                 "libs",
                 ...tabs.map((t) => t.title),
               ]
