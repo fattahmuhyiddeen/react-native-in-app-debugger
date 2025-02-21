@@ -227,7 +227,7 @@ export default ({
             </View>
             <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
           </View>
-          {tab === "variables" && !!variables && (
+          {tab === "vars" && !!variables && (
             <Variables variables={variables} />
           )}
           {tab === "libs" && <Libs />}
