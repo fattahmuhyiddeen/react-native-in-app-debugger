@@ -1,10 +1,10 @@
 import React from 'react';
 import Text from './Text';
 
-export default ({ text, filter }) => {
-    if (!filter || !/^[a-zA-Z0-9./]+$/.test(filter)) return text;
+export default ({ text, filter, style = {} }) => {
+    if (!filter || !/^[a-zA-Z0-9./]+$/.test(filter)) return <Text style={style}>{text}</Text>;
     const indices = [...text.matchAll(new RegExp(filter, 'gi'))].map((a) => a.index);
-    if (!indices.length) return text;
+    if (!indices.length) return <Text style={style}>{text}</Text>;
     return (
       <>
         {indices.map((i, ii) => {
@@ -14,7 +14,7 @@ export default ({ text, filter }) => {
           return (
             <>
               {preText}
-              <Text style={{ backgroundColor: 'yellow', color: 'black' }}>{searchText}</Text>
+              <Text style={{ backgroundColor: 'yellow', color: 'black', ...style }}>{searchText}</Text>
               {seqText}
             </>
           );
