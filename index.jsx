@@ -140,8 +140,8 @@ export default ({
         transform: [{ translateX }, { translateY }],
         position: "absolute",
         borderRadius,
-        borderColor: 'white',
-        borderWidth: .5,
+        borderColor: isOpen ? undefined : "white",
+        borderWidth: 0.5,
         backgroundColor: "#000000" + (isOpen ? "ee" : "bb"),
         height,
         width,
@@ -227,9 +227,7 @@ export default ({
             </View>
             <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
           </View>
-          {tab === "vars" && !!variables && (
-            <Variables variables={variables} />
-          )}
+          {tab === "vars" && !!variables && <Variables variables={variables} />}
           {tab === "libs" && <Libs />}
           {tab === "api" && (
             <Api
