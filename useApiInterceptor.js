@@ -3,7 +3,11 @@ import XHRInterceptor from 'react-native/Libraries/Network/XHRInterceptor.js';
 
 const filterNonBusinessRelatedAPI = true;
 
-const shouldExclude = (url, method) => ['HEAD'].includes(method)
+const shouldExclude = (url, method) =>
+  ['HEAD'].includes(method) ||
+  url.includes('codepush') ||
+  url.includes('localhost') ||
+  url.includes('applicationinsights.azure.com');
 
 const parse = (data) => {
   try {
