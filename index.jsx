@@ -193,7 +193,7 @@ export default ({
               {[
                 "api",
                 !!variables && "vars",
-                "libs",
+                "config",
                 ...tabs.map((t) => t.title),
               ]
                 .filter(Boolean)
@@ -228,7 +228,12 @@ export default ({
             <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
           </View>
           {tab === "vars" && !!variables && <Variables variables={variables} />}
-          {tab === "libs" && <Libs />}
+          {tab === "config" && (
+            <Libs
+              deeplinkPrefix={variables.DEEPLINK_PREFIX}
+              onClose={() => setIsOpen(false)}
+            />
+          )}
           {tab === "api" && (
             <Api
               {...{ apis, setBlacklists, blacklists, maxNumOfApiToStore }}

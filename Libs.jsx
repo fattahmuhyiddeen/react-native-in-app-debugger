@@ -9,17 +9,19 @@ import Text from "./Text";
 import Highlight from "./Highlight";
 import packageJson from "../../package.json";
 import realDeps from "./parentDependencies.js";
+import Deeplink from "./Deeplink";
 
 const libs = Object.entries(packageJson.dependencies).reduce(
   (arr, [name, version]) => [...arr, { name, version }],
   []
 );
 
-export default () => {
+export default (p) => {
   const [filter, setFilter] = useState("");
 
   return (
     <>
+      {!!p.deeplinkPrefix && <Deeplink {...p} />}
       <TextInput
         value={filter}
         placeholder="Filter..."
