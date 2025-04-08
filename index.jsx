@@ -6,7 +6,9 @@ import {
   View,
   SafeAreaView,
   useWindowDimensions,
+  FlatList,
 } from "react-native";
+import Deeplink from "./Deeplink";
 import Text from "./Text";
 import X from "./X";
 const testId = "react-native-in-app-debugger-close-button";
@@ -64,6 +66,8 @@ export default ({
   interceptResponse,
   tabs = [],
 }) => {
+
+  const deeplinkPrefix = variables?.DEEPLINK_PREFIX;
   const [blacklists, setB, blacklistRef] = useStateRef([]);
   const dimension = useWindowDimensions();
 
@@ -189,11 +193,51 @@ export default ({
             ))}
           </View>
           <View style={{ flexDirection: "row", padding: 5, gap: 6 }}>
-            <View style={{ flex: 1, flexDirection: "row" }}>
+            <FlatList
+              style={{flex: 1}}
+              data={[
+                "api",
+                !!variables && "vars",
+                !!deeplinkPrefix && "deeplink",
+                "libs",
+                ...tabs.map((t) => t.title),
+              ]
+                .filter(Boolean)}
+              keyExtractor={(item) => item}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index})=>{
+                const isSelected = item === tab;
+                return (
+                  <TouchableOpacity
+                    onPress={() => setTab(item)}
+                    activeOpacity={isSelected ? 1 : 0.7}
+                    style={{
+                      paddingHorizontal: 8,
+                      borderBottomWidth: +isSelected,
+                      borderColor: "white",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        opacity: isSelected ? 1 : 0.5,
+                        textAlign: "center",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {item}
+                      {!index && !!apis.length && <Text> ({apis.length})</Text>}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+            {/* <View style={{ flex: 1, flexDirection: "row" }}>
               {[
                 "api",
                 !!variables && "vars",
-                "config",
+                "libs",
                 ...tabs.map((t) => t.title),
               ]
                 .filter(Boolean)
@@ -224,16 +268,12 @@ export default ({
                     </TouchableOpacity>
                   );
                 })}
-            </View>
+            </View> */}
             <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
           </View>
-          {tab === "vars" && !!variables && <Variables variables={variables} />}
-          {tab === "config" && (
-            <Libs
-              deeplinkPrefix={variables.DEEPLINK_PREFIX}
-              onClose={() => setIsOpen(false)}
-            />
-          )}
+          {tab === "vars" && <Variables variables={variables} />}
+          {tab === "deeplink" && <Deeplink deeplinkPrefix={deeplinkPrefix} onClose={() => setIsOpen(false)} />}
+          {tab === "libs" && <Libs />}
           {tab === "api" && (
             <Api
               {...{ apis, setBlacklists, blacklists, maxNumOfApiToStore }}

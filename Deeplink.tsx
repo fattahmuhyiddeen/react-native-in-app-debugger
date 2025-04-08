@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Linking, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Linking,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  FlatList,
+} from "react-native";
+import X from "./X";
 
 let LocalStorage;
 try {
@@ -14,14 +22,25 @@ export default ({ deeplinkPrefix, onClose }) => {
   const [history, setHistory] = React.useState([]);
 
   const go = (t) => {
-    const newHistory = [t, ...history.filter((h) => h !== t)].slice(0, 3);
+    const newHistory = [t, ...history.filter((h) => h !== t)];
+    // setHistory(newHistory);
+    setTimeout(() => {
+      LocalStorage?.setItem(
+        "in-app-debugger-deeplink-list",
+        JSON.stringify(newHistory)
+      );
+      Linking.openURL(deeplinkPrefix + t);
+    }, 500);
+    onClose();
+  };
+
+  const remove = (t) => {
+    const newHistory = history.filter((h) => h !== t);
     setHistory(newHistory);
     LocalStorage?.setItem(
       "in-app-debugger-deeplink-list",
       JSON.stringify(newHistory)
     );
-    onClose();
-    Linking.openURL(deeplinkPrefix + t);
   };
 
   useEffect(() => {
@@ -56,11 +75,29 @@ export default ({ deeplinkPrefix, onClose }) => {
           <Text style={{ color: "black", fontSize: 9 }}>Go</Text>
         </TouchableOpacity>
       </View>
-      {history.map((h) => (
-        <TouchableOpacity style={{ margin: 6 }} onPress={() => go(h)}>
-          <Text style={{ color: "grey", textAlign: "right" }}>{h}</Text>
-        </TouchableOpacity>
-      ))}
+      <FlatList
+        data={history}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+              padding: 10,
+              justifyContent: "flex-end",
+            }}
+          >
+            <TouchableOpacity onPress={() => go(item)}>
+              <Text style={{ color: "white", textAlign: "right" }}>{item}</Text>
+            </TouchableOpacity>
+            <X
+              style={{ marginRight: 5 }}
+              size={15}
+              onPress={() => remove(item)}
+            />
+          </View>
+        )}
+      />
     </View>
   );
 };
