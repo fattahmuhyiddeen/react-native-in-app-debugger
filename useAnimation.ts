@@ -125,7 +125,12 @@ export default (defaultBadgeHeight) => {
     translateX: position.x,
     translateY: position.y,
     isOpen,
-    setIsOpen,
+    setIsOpen: (v) => {
+      Keyboard.dismiss();
+      setTimeout(() => {
+        setIsOpen(v);
+      }, 100);
+    },
     borderRadius: isOpen ? 0 : defaultBorderRadius,
     shouldShowDetails,
   };
