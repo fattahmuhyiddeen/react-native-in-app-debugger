@@ -198,7 +198,7 @@ export default ({
               data={[
                 "api",
                 !!variables && "vars",
-                !!deeplinkPrefix && "deeplink",
+                "deeplink",
                 "libs",
                 ...tabs.map((t) => t.title),
               ]

@@ -17,7 +17,7 @@ try {
   // console.error("Error importing LocalStorage:", error);
 }
 
-export default ({ deeplinkPrefix, onClose }) => {
+export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
   const [text, setText] = React.useState("");
   const [history, setHistory] = React.useState([]);
 
