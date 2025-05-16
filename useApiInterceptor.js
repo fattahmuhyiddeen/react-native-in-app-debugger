@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import XHRInterceptor from 'react-native/Libraries/Network/XHRInterceptor.js';
+import XHRInterceptor from 'react-native/src/private/inspector/XHRInterceptor.js';
 
 const filterNonBusinessRelatedAPI = true;
 
