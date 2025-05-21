@@ -68,7 +68,7 @@ export default ({ item, filter, wrap, setWrap }) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <Comp horizontal>
+      <Comp horizontal style={{flex:1}}>
         {tab === tabs[0].value && hasResponse && (
           <Text style={{ color: "white" }}>
             <Highlight
