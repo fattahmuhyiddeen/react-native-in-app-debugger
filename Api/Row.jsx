@@ -64,11 +64,11 @@ export default ({ item, filter, wrap, setWrap }) => {
           }}
         >
           <Text style={{ color: wrap ? undefined : "white", fontSize: 10 }}>
-            Wrap Text
+            Wrap
           </Text>
         </TouchableOpacity>
       </View>
-      <Comp horizontal style={{flex:1}}>
+      <Comp horizontal>
         {tab === tabs[0].value && hasResponse && (
           <Text style={{ color: "white" }}>
             <Highlight
