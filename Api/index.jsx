@@ -6,6 +6,7 @@ import {
   Alert,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import Text from "../Text";
 import Highlight from "../Highlight";
@@ -130,6 +131,9 @@ export default (props) => {
               <Bookmark size={7} />
             </TouchableOpacity>
           </>
+        )}
+        {apis.some((a) => !a.response) && (
+          <ActivityIndicator size="small" color="white" />
         )}
         <TextInput
           value={filter}
