@@ -75,7 +75,6 @@ All FlatList props should work plus props mentioned below
 | `labels` | Array of strings | Array of strings you want to show of the floating debugger pill. For each strings in the array will eb displayed as a single line in the floating debugger pill | | Optional |
 | `maxNumOfApiToStore` | integer | Number of APIs to be kept. Too much API might make the whole app lag, therefore need to trade off. Suggested value is 50 | | Optional. If not set, all APIs will be kept forever |
 `version` | string | Any string passed here will be shown in debugger's floating panel. | | Optional. If not supplied, version number will taken automatically using React Native Device Info library. But if Device Info library is not installed, then no version will be shown if this prop is not passed.
-`interceptResponse` | function | Callback function when receive response from any API. | | Optional
 
 
 ### Integration with Third Party Library

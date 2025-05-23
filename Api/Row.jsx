@@ -51,7 +51,15 @@ export default ({ item, filter, wrap, setWrap }) => {
           <Tab key={t.value} {...t} />
         ))}
       </View>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          padding: 10,
+          gap: 10,
+        }}
+      >
         <TouchableOpacity
           onPress={() => setWrap((v) => !v)}
           style={{
@@ -59,7 +67,6 @@ export default ({ item, filter, wrap, setWrap }) => {
             backgroundColor: wrap ? "white" : undefined,
             borderColor: "white",
             padding: 5,
-            margin: 10,
             borderRadius: 10,
           }}
         >
