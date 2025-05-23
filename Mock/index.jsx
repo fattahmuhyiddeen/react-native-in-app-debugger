@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Text from "../Text";
 import Highlight from "../Highlight";
-import MockGroup from "react-native-in-app-debugger/Mock/MockGroup";
+import MockGroup from "./MockGroup";
 
 const format = (m) => "(" + m.request.method + ") " + m.request.url;
 
