@@ -3,7 +3,7 @@ import Text from './Text';
 
 export default ({ text, filter, style = {} }) => {
     if (!filter || !/^[a-zA-Z0-9./]+$/.test(filter)) return <Text style={style}>{text}</Text>;
-    const indices = [...text.matchAll(new RegExp(filter, 'gi'))].map((a) => a.index);
+    const indices = text ? [...text.matchAll(new RegExp(filter, 'gi'))].map((a) => a.index) : [];
     if (!indices.length) return <Text style={style}>{text}</Text>;
     return (
       <>

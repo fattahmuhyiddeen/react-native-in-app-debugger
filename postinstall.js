@@ -10,15 +10,15 @@ for (const d in read('../../package.json').dependencies) {
 fs.writeSync(parentDependencies, '}');
 fs.closeSync(parentDependencies);
 
-const isRNVersionGTE0780 = (v) => v.split('.').map(Number)[1] < 78;
+// const isRNVersionGTE0780 = (v) => v.split('.').map(Number)[1] < 78;
 
-if (isRNVersionGTE0780(read('../react-native/package.json').version)) {
-  try {
-    const filePath = './useApiInterceptor.js';
-    const regex = new RegExp('react-native/src/private/inspector/XHRInterceptor.js', 'g');
-    const fileContent = fs.readFileSync(filePath, 'utf8').replace(regex, 'react-native/Libraries/Network/XHRInterceptor.js');
-    fs.writeFileSync(filePath, fileContent, 'utf8');
-  } catch (err) {
-    console.error('Error while replacing strings in file:', err);
-  }
-}
+// if (isRNVersionGTE0780(read('../react-native/package.json').version)) {
+//   try {
+//     const filePath = './useApiInterceptor.js';
+//     const regex = new RegExp('react-native/src/private/inspector/XHRInterceptor.js', 'g');
+//     const fileContent = fs.readFileSync(filePath, 'utf8').replace(regex, 'react-native/Libraries/Network/XHRInterceptor.js');
+//     fs.writeFileSync(filePath, fileContent, 'utf8');
+//   } catch (err) {
+//     console.error('Error while replacing strings in file:', err);
+//   }
+// }

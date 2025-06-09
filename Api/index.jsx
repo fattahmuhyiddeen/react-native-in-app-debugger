@@ -157,7 +157,9 @@ export default (props) => {
         showsVerticalScrollIndicator
         sections={apis
           .filter(
-            (a) => !filter || JSON.stringify(a).toLowerCase().includes(filter)
+            (a) =>
+              !filter ||
+              JSON.stringify(a.request).toLowerCase().includes(filter)
           )
           .filter((a) => !showBookmarkOnly || props.bookmarks[a.id])
           .map((data) => ({ data: [data], id: data.id }))}
@@ -168,8 +170,11 @@ export default (props) => {
             <View style={{ height: 20 }} />
           )
         }
-        renderSectionHeader={({ section: { data } }) => {
-          const item = data[0];
+        renderSectionHeader={({
+          section: {
+            data: [item],
+          },
+        }) => {
           const hasResponse = !!item.response;
 
           const duration = item.response?.timestamp
@@ -198,6 +203,10 @@ export default (props) => {
                 }}
               />
               <Text selectable style={{ flex: 1, color, marginVertical: 10 }}>
+                <Text style={{ color: "#555", fontSize: 8 }}>
+                  {item.id + "\n"}
+                </Text>
+
                 <Text style={{ opacity: 0.7 }}>
                   {item.request.method +
                     ` (${item.response?.status ?? "no response"})` +
@@ -266,6 +275,14 @@ export default (props) => {
                 >
                   <BlacklistIcon />
                 </TouchableOpacity>
+                {item.interface === "axios" && (
+                  <TouchableOpacity
+                    onPress={() => props.goToMock(item)}
+                    style={styles.actionButton}
+                  >
+                    <Text style={{ color: "black", fontSize: 10 }}>Mock</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           );

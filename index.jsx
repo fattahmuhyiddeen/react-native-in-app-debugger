@@ -31,9 +31,11 @@ try {
 import useAnimation from "./useAnimation";
 import Variables from "./Variables";
 import Api from "./Api";
-import useApiInterceptor from "./useApiInterceptor";
+import useApiInterceptor from "./Api/useApiInterceptor";
 import useStateRef from "./useStateRef";
-import Libs from "react-native-in-app-debugger/Libs";
+import Libs from "./Libs";
+import Mock from "./Mock";
+import MockDetails from "./Mock/MockDetails";
 
 const fontSize = 7;
 
@@ -57,16 +59,19 @@ const Label = (props) => (
   />
 );
 
+let cachedMocks = [];
+LocalStorage.getItem("in-app-debugger-mocked").then((d) => {
+  if (d) cachedMocks = JSON.parse(d);
+});
+
 export default ({
   variables,
   env,
   version = v,
   maxNumOfApiToStore = 0,
   labels = [],
-  interceptResponse,
   tabs = [],
 }) => {
-
   const deeplinkPrefix = variables?.DEEPLINK_PREFIX;
   const [blacklists, setB, blacklistRef] = useStateRef([]);
   const dimension = useWindowDimensions();
@@ -87,26 +92,37 @@ export default ({
     }
   };
 
+  const [tab, setTab] = useState("api");
+  const [mocks, setMocks] = useState(cachedMocks);
+  const [mockDetails, setMockDetails] = useState();
+
+  useEffect(() => {
+    LocalStorage?.setItem("in-app-debugger-mocked", JSON.stringify(mocks));
+  }, [mocks]);
+
   if (LocalStorage) {
     useEffect(() => {
       setTimeout(() => {
-        LocalStorage.getItem("in-app-debugger-blacklist").then((d) => {
-          if (d) {
-            setBlacklists(JSON.parse(d));
-          }
-        });
+        LocalStorage.getItem("in-app-debugger-blacklist").then(
+          (d) => d && setBlacklists(JSON.parse(d))
+        );
       }, 4000);
     }, []);
   }
 
-  const { apis, ...restApiInterceptor } = useApiInterceptor(
+  const { apis, ...restApiInterceptor } = useApiInterceptor({
     maxNumOfApiToStore,
     blacklists,
-    interceptResponse,
-    blacklistRef
-  );
+    blacklistRef,
+    mocks,
+  });
 
-  const [tab, setTab] = useState("api");
+  const goToMock = (d) => {
+    setMockDetails(d);
+    //setTab('mock');
+  };
+
+  const deleteMock = (id) => setMocks((v) => v.filter((i) => i.id !== id));
 
   const errors = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
@@ -138,6 +154,7 @@ export default ({
   const CustomTabComponent = tabs.find((t) => tab === t.title)?.component;
   const [disapear, setDisapear] = useState();
   if (disapear) return null;
+
   return (
     <Animated.View
       style={{
@@ -186,70 +203,35 @@ export default ({
           ))}
         </TouchableOpacity>
       ) : (
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={styles.labelContainer}>
-            {displayLabels.map((l) => (
-              <Label key={l}>{l}</Label>
-            ))}
-          </View>
-          <View style={{ flexDirection: "row", padding: 5, gap: 6 }}>
-            <FlatList
-              style={{flex: 1}}
-              data={[
-                "api",
-                !!variables && "vars",
-                "deeplink",
-                "libs",
-                ...tabs.map((t) => t.title),
-              ]
-                .filter(Boolean)}
-              keyExtractor={(item) => item}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index})=>{
-                const isSelected = item === tab;
-                return (
-                  <TouchableOpacity
-                    onPress={() => setTab(item)}
-                    activeOpacity={isSelected ? 1 : 0.7}
-                    style={{
-                      paddingHorizontal: 8,
-                      borderBottomWidth: +isSelected,
-                      borderColor: "white",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: "white",
-                        opacity: isSelected ? 1 : 0.5,
-                        textAlign: "center",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item}
-                      {!index && !!apis.length && <Text> ({apis.length})</Text>}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-            {/* <View style={{ flex: 1, flexDirection: "row" }}>
-              {[
-                "api",
-                !!variables && "vars",
-                "libs",
-                ...tabs.map((t) => t.title),
-              ]
-                .filter(Boolean)
-                .map((t, i) => {
-                  const isSelected = t === tab;
+        <>
+          <SafeAreaView style={{ flex: 1 }}>
+            <View style={styles.labelContainer}>
+              {displayLabels.map((l) => (
+                <Label key={l}>{l}</Label>
+              ))}
+            </View>
+            <View style={{ flexDirection: "row", padding: 5, gap: 6 }}>
+              <FlatList
+                style={{ flex: 1 }}
+                data={[
+                  "api",
+                  "mock",
+                  !!variables && "vars",
+                  "deeplink",
+                  "libs",
+                  ...tabs.map((t) => t.title),
+                ].filter(Boolean)}
+                keyExtractor={(item) => item}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item, index }) => {
+                  const isSelected = item === tab;
                   return (
                     <TouchableOpacity
-                      onPress={() => setTab(t)}
+                      onPress={() => setTab(item)}
                       activeOpacity={isSelected ? 1 : 0.7}
-                      key={t}
                       style={{
-                        flex: 1,
+                        paddingHorizontal: 8,
                         borderBottomWidth: +isSelected,
                         borderColor: "white",
                       }}
@@ -262,26 +244,49 @@ export default ({
                           textTransform: "uppercase",
                         }}
                       >
-                        {t}
-                        {!i && !!apis.length && <Text> ({apis.length})</Text>}
+                        {item}
+                        {!index && !!apis.length && (
+                          <Text> ({apis.length})</Text>
+                        )}
+                        {index === 1 && !!mocks.length && (
+                          <Text> ({mocks.length})</Text>
+                        )}
                       </Text>
                     </TouchableOpacity>
                   );
-                })}
-            </View> */}
-            <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
-          </View>
-          {tab === "vars" && <Variables variables={variables} />}
-          {tab === "deeplink" && <Deeplink deeplinkPrefix={deeplinkPrefix} onClose={() => setIsOpen(false)} />}
-          {tab === "libs" && <Libs />}
-          {tab === "api" && (
-            <Api
-              {...{ apis, setBlacklists, blacklists, maxNumOfApiToStore }}
-              {...restApiInterceptor}
-            />
-          )}
-          {!!CustomTabComponent && <CustomTabComponent />}
-        </SafeAreaView>
+                }}
+              />
+              <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
+            </View>
+            {tab === "vars" && <Variables variables={variables} />}
+            {tab === "mock" && (
+              <Mock {...{ mocks, setMocks, deleteMock, setMockDetails }} />
+            )}
+            {tab === "deeplink" && (
+              <Deeplink
+                deeplinkPrefix={deeplinkPrefix}
+                onClose={() => setIsOpen(false)}
+              />
+            )}
+            {tab === "libs" && <Libs />}
+            {tab === "api" && (
+              <Api
+                {...{
+                  apis,
+                  setBlacklists,
+                  blacklists,
+                  maxNumOfApiToStore,
+                  goToMock,
+                }}
+                {...restApiInterceptor}
+              />
+            )}
+            {!!CustomTabComponent && <CustomTabComponent />}
+          </SafeAreaView>
+          <MockDetails
+            {...{ mockDetails, setMockDetails, setMocks, deleteMock, mocks }}
+          />
+        </>
       )}
     </Animated.View>
   );
