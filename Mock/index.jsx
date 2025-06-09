@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, TextInput } from 'react-native';
+import { FlatList, StyleSheet, TextInput, TouchableHighlight, View } from 'react-native';
+import Text from '../Text';
+import Highlight from '../Highlight';
 import MockGroup from './MockGroup';
 
 const format = (m) => '(' + m.request.method + ') ' + m.request.url;

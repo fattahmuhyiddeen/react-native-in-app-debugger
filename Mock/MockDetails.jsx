@@ -1,5 +1,5 @@
 import React, { use, useEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { FlatList, View, StyleSheet, TextInput, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
 import Text from '../Text';
 import X from '../X';
 
@@ -63,14 +63,14 @@ export default (p) => {
   useEffect(reset, [p.mockDetails]);
   const [canReset, setCanReset] = useState(false);
 
-  // const parse = (data) => {
-  //   try {
-  //     return JSON.parse(data);
-  //   } catch (e) {
-  //     // Alert.alert('Error', 'Invalid JSON');
-  //     return {};
-  //   }
-  // };
+  const parse = (data) => {
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      // Alert.alert('Error', 'Invalid JSON');
+      return {};
+    }
+  };
 
   useEffect(() => {
     try {
