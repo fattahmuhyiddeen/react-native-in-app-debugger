@@ -126,7 +126,7 @@ export default ({
 
   const numErrorApiCalls = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
-  const numMockedApiCalls = apis.filter((a) => a.isMocked).length;
+  const numMockedApiCalls = apis.filter((a) => !!a.mockid).length;
   let badgeHeight = fontSize * 3;
 
   const displayLabels = [

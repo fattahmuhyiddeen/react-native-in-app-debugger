@@ -61,7 +61,7 @@ export default (p) => {
     setTmpResStatus(p.mockDetails.response.status + '' || '');
   };
   useEffect(reset, [p.mockDetails]);
-  const [canReset, setCanReset] = useState(false);
+  // const [canReset, setCanReset] = useState(false);
 
   const parse = (data) => {
     try {
@@ -72,15 +72,25 @@ export default (p) => {
     }
   };
 
-  useEffect(() => {
-    try {
-      setCanReset(JSON.stringify(p.mockDetails, removeId) != tmpMockDetails);
-    } catch (e) {
-      setCanReset(true);
-    }
-  }, [p.mockDetails, tmpMockDetails]);
+  // console.log('xxxxx mock details', JSON.stringify(p.mockDetails, removeId)?.replace(/\s+/g, ""))
+  // console.log('xxxxx tmpMockDetails', tmpMockDetails?.replace?.(/\s+/g, ""))
+
+  // useEffect(() => {
+  //   try {
+  //     setCanReset(JSON.stringify(p.mockDetails, removeId)?.replace(/\s+/g, "") != tmpMockDetails?.replace?.(/\s+/g, ""));
+  //   } catch (e) {
+  //     setCanReset(true);
+  //   }
+  // }, [p.mockDetails, tmpMockDetails]);
   if (!p.mockDetails) return null;
+  // const canReset = JSON.stringify(p.mockDetails, removeId)?.replace(/\s+/g, '') !== tmpMockDetails?.replace?.(/\s+/g, '');
+  const canReset =
+    tmpResStatus != p.mockDetails.response.status ||
+    JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, '') !== tmpResBody?.replace?.(/\s+/g, '');
   const isnew = !p.mocks.some((m) => m.id === p.mockDetails.id);
+
+  console.log('xxxxx response', JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, ''));
+  console.log('xxxxx tmpResBody', tmpResBody?.replace?.(/\s+/g, ''));
 
   return (
     <View

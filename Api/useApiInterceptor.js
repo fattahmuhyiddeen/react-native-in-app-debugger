@@ -49,12 +49,12 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
       timestamp: performance.now(),
       datetime: new Date().toLocaleString(),
       time: `${hour}:${minute}:${second}`,
-      isMocked: undefined,
+      mockid: undefined,
       interface: undefined
     };
     setApis((v) => {
       const newData = [
-        { request, id: Date.now().toString(36) + Math.random().toString(36), isMocked: !!data.isMocked, interface: data.interface },
+        { request, id: Date.now().toString(36) + Math.random().toString(36), mockid: !!data.mockid, interface: data.interface },
         ...(maxNumOfApiToStore ? v.slice(0, maxNumOfApiToStore - 1) : v),
       ];
       return newData;
@@ -201,7 +201,7 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
             headers,
             method,
             data,
-            isMocked: !!mock,
+            mockid: mock?.id,
             interface: 'axios',
           });
         }
