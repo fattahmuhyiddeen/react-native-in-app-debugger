@@ -159,7 +159,7 @@ export default (props) => {
           .filter(
             (a) =>
               !filter ||
-              JSON.stringify(a.request).toLowerCase().includes(filter)
+              JSON.stringify(a.request.url).toLowerCase().includes(filter)
           )
           .filter((a) => !showBookmarkOnly || props.bookmarks[a.id])
           .map((data) => ({ data: [data], id: data.id }))}
