@@ -124,8 +124,9 @@ export default ({
 
   const deleteMock = (id) => setMocks((v) => v.filter((i) => i.id !== id));
 
-  const errors = apis.filter((a) => a.response?.error).length;
+  const numErrorApiCalls = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
+  const numMockedApiCalls = apis.filter((a) => a.isMocked).length;
   let badgeHeight = fontSize * 3;
 
   const displayLabels = [
@@ -167,7 +168,8 @@ export default ({
         height,
         width,
         zIndex: 999999999,
-        borderTopRightRadius: numPendingApiCalls || errors ? 0 : undefined,
+        borderTopRightRadius:
+          numPendingApiCalls || numErrorApiCalls ? 0 : undefined,
       }}
       {...(isOpen ? {} : panResponder.panHandlers)}
     >
@@ -185,6 +187,13 @@ export default ({
           activeOpacity={0.8}
         >
           <View style={styles.badgeContainer}>
+            {!!numMockedApiCalls && (
+              <View style={[styles.badge, { backgroundColor: "blue" }]}>
+                <Text style={{ fontSize, color: "white" }}>
+                  {numMockedApiCalls}
+                </Text>
+              </View>
+            )}
             {!!numPendingApiCalls && (
               <View style={[styles.badge, { backgroundColor: "orange" }]}>
                 <Text style={{ fontSize, color: "white" }}>
@@ -192,9 +201,11 @@ export default ({
                 </Text>
               </View>
             )}
-            {!!errors && (
+            {!!numErrorApiCalls && (
               <View style={[styles.badge, { backgroundColor: "red" }]}>
-                <Text style={{ fontSize, color: "white" }}>{errors}</Text>
+                <Text style={{ fontSize, color: "white" }}>
+                  {numErrorApiCalls}
+                </Text>
               </View>
             )}
           </View>

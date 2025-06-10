@@ -182,7 +182,9 @@ export default (props) => {
             : 0;
           const isExpand = expands[item.id];
           const bookmarkColor = props.bookmarks[item.id];
-          const color = hasResponse
+          const color = item.isMocked
+            ? "blue"
+            : hasResponse
             ? item.response.error
               ? "red"
               : "white"
