@@ -168,11 +168,11 @@ export default (p) => {
         })}
       </View>
       {tab === "response" && (
-        <View style={{ gap: 3 }}>
+        <View style={{ gap: 3, padding: 10 }}>
           <View style={{ flexDirection: "row", gap: 5 }}>
             <Text>Status</Text>
             <TextInput
-              style={{ backgroundColor: "#ccc", width: 50, padding: 2 }}
+              style={{ ...styles.textField, width: 50 }}
               inputMode="numeric"
               onChangeText={(t) => {
                 setTmpResStatus(t);
@@ -192,10 +192,9 @@ export default (p) => {
             <Text>Body</Text>
             <TextInput
               style={{
-                backgroundColor: "#ccc",
+                ...styles.textField,
                 height: 250,
                 flex: 1,
-                padding: 2,
               }}
               multiline
               onChangeText={setTmpResBody}
@@ -275,5 +274,11 @@ const styles = StyleSheet.create({
     padding: 4,
     alignItems: "center",
     justifyContent: "center",
+  },
+  textField: {
+    backgroundColor: "#ccc",
+    width: 50,
+    padding: 2,
+    borderRadius: 5,
   },
 });
