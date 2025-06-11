@@ -1,20 +1,26 @@
-import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import Text from '../Text';
-import X from '../X';
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Text from "../Text";
+import X from "../X";
 
-const removeId = (key, value) => (key === 'id' ? undefined : value);
+const removeId = (key, value) => (key === "id" ? undefined : value);
 export default (p) => {
-  const [tab, setTab] = useState('response');
-  const [tmpResBody, setTmpResBody] = useState('');
-  const [tmpResStatus, setTmpResStatus] = useState('');
+  const [tab, setTab] = useState("response");
+  const [tmpResBody, setTmpResBody] = useState("");
+  const [tmpResStatus, setTmpResStatus] = useState("");
   const [tmpMockDetails, setTmpMockDetails] = useState({});
 
   const save = (cb) => {
-    if (tab === 'response') {
+    if (tab === "response") {
       try {
         if (!tmpResStatus) {
-          return Alert.alert('Sorry', 'Status code is required');
+          return Alert.alert("Sorry", "Status code is required");
         }
         const tmp = JSON.parse(tmpMockDetails);
         tmp.response.data = JSON.parse(tmpResBody);
@@ -46,25 +52,25 @@ export default (p) => {
         // })
         cb?.();
       } catch (e) {
-        return Alert.alert('Sorry', 'Please fix the response body JSON');
+        return Alert.alert("Sorry", "Please fix the response body JSON");
       }
-    } else if (tab === 'json') {
+    } else if (tab === "json") {
       cb?.();
-    } else if (tab === 'request') {
+    } else if (tab === "request") {
       cb?.();
     }
   };
-  const hasResponse = !!p.mockDetails?.response
+  const hasResponse = !!p.mockDetails?.response;
 
   const reset = () => {
     if (!p.mockDetails) return;
     setTmpMockDetails(JSON.stringify(p.mockDetails, removeId, 4));
     if (hasResponse) {
       setTmpResBody(JSON.stringify(p.mockDetails.response.data, removeId, 4));
-      setTmpResStatus(p.mockDetails.response.status + '' || '');
+      setTmpResStatus(p.mockDetails.response.status + "" || "");
     } else {
-      setTmpResBody('');
-      setTmpResStatus('');
+      setTmpResBody("");
+      setTmpResStatus("");
     }
   };
   useEffect(reset, [p.mockDetails]);
@@ -91,9 +97,11 @@ export default (p) => {
   // }, [p.mockDetails, tmpMockDetails]);
   if (!p.mockDetails) return null;
   // const canReset = JSON.stringify(p.mockDetails, removeId)?.replace(/\s+/g, '') !== tmpMockDetails?.replace?.(/\s+/g, '');
-  const canReset = !hasResponse ||
+  const canReset =
+    !hasResponse ||
     tmpResStatus != p.mockDetails.response.status ||
-    JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, '') !== tmpResBody?.replace?.(/\s+/g, '');
+    JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, "") !==
+      tmpResBody?.replace?.(/\s+/g, "");
   const isnew = !p.mocks.some((m) => m.id === p.mockDetails.id);
 
   // console.log('xxxxx response', JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, ''));
@@ -106,17 +114,19 @@ export default (p) => {
         bottom: 0,
         left: 0,
         right: 0,
-        position: 'absolute',
+        position: "absolute",
         zIndex: 1000,
-        backgroundColor: 'grey',
-        width: '100%',
-        height: '100%',
+        backgroundColor: "grey",
+        width: "100%",
+        height: "100%",
         paddingTop: 50,
       }}
     >
       {!isnew && <Text style={{ opacity: 0.3 }}>{p.mockDetails.id}</Text>}
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ flex: 1 }}>{`(${p.mockDetails.request.method}) ${p.mockDetails.request.url}`}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <Text
+          style={{ flex: 1 }}
+        >{`(${p.mockDetails.request.method}) ${p.mockDetails.request.url}`}</Text>
         <TouchableOpacity onPress={() => p.setMockDetails(null)}>
           <X size={25} />
         </TouchableOpacity>
@@ -124,34 +134,46 @@ export default (p) => {
       <View
         style={{
           marginVertical: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          backgroundColor: 'black',
+          flexDirection: "row",
+          justifyContent: "space-around",
+          backgroundColor: "black",
           borderRadius: 5,
           padding: 5,
         }}
       >
-        {['request', 'response', 'json'].map((item) => {
+        {["request", "response", "json"].map((item) => {
           const isSelected = item === tab;
           return (
             <TouchableOpacity
-              style={{ backgroundColor: isSelected ? 'white' : 'black', padding: 3, borderRadius: 5 }}
+              style={{
+                backgroundColor: isSelected ? "white" : "black",
+                padding: 3,
+                borderRadius: 5,
+              }}
               onPress={() => {
-                save(() => setTab(item));
+                // save(() => setTab(item));
+                setTab(item);
               }}
             >
-              <Text style={{ textTransform: 'uppercase', color: isSelected ? 'black' : 'white' }}>{item}</Text>
+              <Text
+                style={{
+                  textTransform: "uppercase",
+                  color: isSelected ? "black" : "white",
+                }}
+              >
+                {item}
+              </Text>
             </TouchableOpacity>
           );
         })}
       </View>
-      {tab === 'response' && (
+      {tab === "response" && (
         <View style={{ gap: 3 }}>
-          <View style={{ flexDirection: 'row', gap: 5 }}>
+          <View style={{ flexDirection: "row", gap: 5 }}>
             <Text>Status</Text>
             <TextInput
-              style={{ backgroundColor: '#ccc', width: 50, padding: 2 }}
-              inputMode='numeric'
+              style={{ backgroundColor: "#ccc", width: 50, padding: 2 }}
+              inputMode="numeric"
               onChangeText={(t) => {
                 setTmpResStatus(t);
                 // try {
@@ -166,10 +188,15 @@ export default (p) => {
             />
           </View>
 
-          <View style={{ flexDirection: 'row', gap: 5 }}>
+          <View style={{ flexDirection: "row", gap: 5 }}>
             <Text>Body</Text>
             <TextInput
-              style={{ backgroundColor: '#ccc', height: 250, flex: 1, padding: 2 }}
+              style={{
+                backgroundColor: "#ccc",
+                height: 250,
+                flex: 1,
+                padding: 2,
+              }}
               multiline
               onChangeText={setTmpResBody}
               value={tmpResBody}
@@ -177,12 +204,22 @@ export default (p) => {
           </View>
         </View>
       )}
-      {tab !== 'response' && <Text style={{ marginTop: 30, textAlign: 'center' }}>To be developed later</Text>}
+      {tab !== "response" && (
+        <Text style={{ marginTop: 30, textAlign: "center" }}>
+          To be developed later
+        </Text>
+      )}
       {/* {tab === 'json' && (
         <TextInput onChangeText={setTmpMockDetails} value={tmpMockDetails} style={{ height: '40%' }} multiline />
       )} */}
-      {tab === 'response' && (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
+      {tab === "response" && (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: 10,
+          }}
+        >
           {!isnew && (
             <TouchableOpacity
               style={styles.actionButton}
@@ -233,10 +270,10 @@ export default (p) => {
 
 const styles = StyleSheet.create({
   actionButton: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 5,
     padding: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
