@@ -192,37 +192,40 @@ export default (props) => {
 
           return (
             <View style={styles.rowHeader}>
-              <Bookmark
-                color={bookmarkColor}
-                onPress={() => {
-                  props.setBookmarks((v) => {
-                    if (!bookmarkColor)
-                      return { ...v, [item.id]: getRandomBrightColor() };
-                    const newV = { ...v };
-                    delete newV[item.id];
-                    return newV;
-                  });
-                }}
-              />
-              <Text selectable style={{ flex: 1, color, marginVertical: 10 }}>
-                <Text style={{ color: "#555", fontSize: 8 }}>
-                  {item.id + "\n"}
+              <View style={{ flex: 1 }}>
+                <View style={{ flexDirection: "row", gap: 5 }}>
+                  <Bookmark
+                    color={bookmarkColor}
+                    onPress={() => {
+                      props.setBookmarks((v) => {
+                        if (!bookmarkColor)
+                          return { ...v, [item.id]: getRandomBrightColor() };
+                        const newV = { ...v };
+                        delete newV[item.id];
+                        return newV;
+                      });
+                    }}
+                  />
+                  <Text style={{ color: "#555", fontSize: 8 }}>
+                    {item.id + "\n"}
+                  </Text>
+                </View>
+                <Text selectable style={{ flex: 1, color }}>
+                  <Text style={{ opacity: 0.7 }}>
+                    {item.request.method +
+                      ` (${item.response?.status ?? "no response"})` +
+                      " - " +
+                      item.request.time +
+                      (hasResponse ? " - " + duration + " second(s)" : "") +
+                      "\n"}
+                  </Text>
+                  <Highlight
+                    text={item.request.url.slice(0, MAX_URL_LENGTH)}
+                    filter={filter}
+                  />
+                  {item.request.url.length > MAX_URL_LENGTH && "......."}
                 </Text>
-
-                <Text style={{ opacity: 0.7 }}>
-                  {item.request.method +
-                    ` (${item.response?.status ?? "no response"})` +
-                    " - " +
-                    item.request.time +
-                    (hasResponse ? " - " + duration + " second(s)" : "") +
-                    "\n"}
-                </Text>
-                <Highlight
-                  text={item.request.url.slice(0, MAX_URL_LENGTH)}
-                  filter={filter}
-                />
-                {item.request.url.length > MAX_URL_LENGTH && "......."}
-              </Text>
+              </View>
               <View style={{ gap: 4 }}>
                 <TouchableOpacity
                   onPress={() =>
@@ -254,30 +257,35 @@ export default (props) => {
                     <Text style={{ color: "black", fontSize: 10 }}>Copy</Text>
                   </TouchableOpacity>
                 )}
-                <TouchableOpacity
-                  onPress={() => {
-                    Alert.alert(
-                      "Are you sure",
-                      `You want to blacklist: \n\n(${item.request.method}) ${item.request.url} \n\nwhere all history logs for this API will be removed and all future request for this API will not be recorded?`,
-                      [
-                        {
-                          text: "Blacklist",
-                          onPress: () =>
-                            props.setBlacklists({
-                              method: item.request.method,
-                              url: item.request.url,
-                            }),
-                          style: "cancel",
-                        },
-                        { text: "Cancel" },
-                      ]
-                    );
-                  }}
-                  style={styles.actionButton}
-                >
-                  <BlacklistIcon />
-                </TouchableOpacity>
-                {item.interface === "axios" && (
+                {isExpand && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      Alert.alert(
+                        "Are you sure",
+                        `You want to blacklist: \n\n(${item.request.method}) ${item.request.url} \n\nwhere all history logs for this API will be removed and all future request for this API will not be recorded?`,
+                        [
+                          {
+                            text: "Blacklist",
+                            onPress: () =>
+                              props.setBlacklists({
+                                method: item.request.method,
+                                url: item.request.url,
+                              }),
+                            style: "cancel",
+                          },
+                          { text: "Cancel" },
+                        ]
+                      );
+                    }}
+                    style={styles.actionButton}
+                  >
+                    <Text style={{ color: "black", fontSize: 10 }}>
+                      Blacklist{" "}
+                    </Text>
+                    <BlacklistIcon />
+                  </TouchableOpacity>
+                )}
+                {isExpand && item.interface === "axios" && (
                   <TouchableOpacity
                     onPress={() => {
                       props.goToMock(
