@@ -54,7 +54,7 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
     };
     setApis((v) => {
       const newData = [
-        { request, id: Date.now().toString(36) + Math.random().toString(36), mockid: !!data.mockid, interface: data.interface },
+        { request, id: Date.now().toString(36) + Math.random().toString(36), mockid: data.mockid, interface: data.interface },
         ...(maxNumOfApiToStore ? v.slice(0, maxNumOfApiToStore - 1) : v),
       ];
       return newData;

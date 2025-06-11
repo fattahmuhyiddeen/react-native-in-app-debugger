@@ -279,7 +279,11 @@ export default (props) => {
                 </TouchableOpacity>
                 {item.interface === "axios" && (
                   <TouchableOpacity
-                    onPress={() => props.goToMock(item)}
+                    onPress={() => {
+                      props.goToMock(
+                        item.mockid ? { ...item, id: item.mockid } : item
+                      );
+                    }}
                     style={styles.actionButton}
                   >
                     <Text style={{ color: "black", fontSize: 10 }}>Mock</Text>

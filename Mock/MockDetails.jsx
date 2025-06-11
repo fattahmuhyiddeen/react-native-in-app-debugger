@@ -1,5 +1,5 @@
-import React, { use, useEffect, useState } from 'react';
-import { FlatList, View, StyleSheet, TextInput, TouchableHighlight, TouchableOpacity, Alert } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import Text from '../Text';
 import X from '../X';
 
@@ -54,11 +54,18 @@ export default (p) => {
       cb?.();
     }
   };
+  const hasResponse = !!p.mockDetails.response
+
   const reset = () => {
     if (!p.mockDetails) return;
     setTmpMockDetails(JSON.stringify(p.mockDetails, removeId, 4));
-    setTmpResBody(JSON.stringify(p.mockDetails.response.data, removeId, 4));
-    setTmpResStatus(p.mockDetails.response.status + '' || '');
+    if (hasResponse) {
+      setTmpResBody(JSON.stringify(p.mockDetails.response.data, removeId, 4));
+      setTmpResStatus(p.mockDetails.response.status + '' || '');
+    } else {
+      setTmpResBody('');
+      setTmpResStatus('');
+    }
   };
   useEffect(reset, [p.mockDetails]);
   // const [canReset, setCanReset] = useState(false);
@@ -84,13 +91,13 @@ export default (p) => {
   // }, [p.mockDetails, tmpMockDetails]);
   if (!p.mockDetails) return null;
   // const canReset = JSON.stringify(p.mockDetails, removeId)?.replace(/\s+/g, '') !== tmpMockDetails?.replace?.(/\s+/g, '');
-  const canReset =
+  const canReset = !hasResponse ||
     tmpResStatus != p.mockDetails.response.status ||
     JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, '') !== tmpResBody?.replace?.(/\s+/g, '');
   const isnew = !p.mocks.some((m) => m.id === p.mockDetails.id);
 
-  console.log('xxxxx response', JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, ''));
-  console.log('xxxxx tmpResBody', tmpResBody?.replace?.(/\s+/g, ''));
+  // console.log('xxxxx response', JSON.stringify(p.mockDetails.response.data)?.replace(/\s+/g, ''));
+  // console.log('xxxxx tmpResBody', tmpResBody?.replace?.(/\s+/g, ''));
 
   return (
     <View
