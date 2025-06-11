@@ -50,11 +50,16 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
       datetime: new Date().toLocaleString(),
       time: `${hour}:${minute}:${second}`,
       mockid: undefined,
-      interface: undefined
+      interface: undefined,
     };
     setApis((v) => {
       const newData = [
-        { request, id: Date.now().toString(36) + Math.random().toString(36), mockid: data.mockid, interface: data.interface },
+        {
+          request,
+          id: Date.now().toString(36) + Math.random().toString(36),
+          mockid: data.mockid,
+          interface: data.interface,
+        },
         ...(maxNumOfApiToStore ? v.slice(0, maxNumOfApiToStore - 1) : v),
       ];
       return newData;
@@ -194,7 +199,7 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
         if (!shouldExclude(url, method)) {
           const data = config.data ? parse(config.data) : undefined;
 
-        const mock = mocked(url, method);
+          const mock = mocked(url, method);
 
           makeRequest({
             url,
@@ -255,5 +260,14 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
     );
   }, [mocks]);
 
-  return { apis, clear: () => setApis([]), bookmarks, setBookmarks };
+  const deleteApi = (id) => {
+    setApis((v) => v.filter((a) => a.id !== id));
+    setBookmarks((v) => {
+      const newV = { ...v };
+      delete newV[id];
+      return newV;
+    });
+  };
+
+  return { apis, deleteApi, clear: () => setApis([]), bookmarks, setBookmarks };
 };

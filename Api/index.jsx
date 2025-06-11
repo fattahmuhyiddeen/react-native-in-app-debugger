@@ -285,16 +285,32 @@ export default (props) => {
                     <BlacklistIcon />
                   </TouchableOpacity>
                 )}
-                {isExpand && item.interface === "axios" && (
+                {isExpand && item.interface === "axios" && !!item.mockid && (
                   <TouchableOpacity
-                    onPress={() => {
-                      props.goToMock(
-                        item.mockid ? { ...item, id: item.mockid } : item
-                      );
-                    }}
+                    onPress={() => props.goToMock({ ...item, id: item.mockid })}
                     style={styles.actionButton}
                   >
-                    <Text style={{ color: "black", fontSize: 10 }}>Mock</Text>
+                    <Text style={{ color: "black", fontSize: 10 }}>
+                      Edit Mock
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {isExpand && item.interface === "axios" && (
+                  <TouchableOpacity
+                    onPress={() => props.goToMock(item)}
+                    style={styles.actionButton}
+                  >
+                    <Text style={{ color: "black", fontSize: 10 }}>
+                      {item.mockid ? "New " : ""}Mock
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                {isExpand && (
+                  <TouchableOpacity
+                    onPress={() => props.deleteApi(item.id)}
+                    style={styles.actionButton}
+                  >
+                    <Text style={{ color: "black", fontSize: 10 }}>Delete</Text>
                   </TouchableOpacity>
                 )}
               </View>

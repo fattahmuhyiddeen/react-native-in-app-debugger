@@ -1,6 +1,6 @@
 {
   "name": "react-native-in-app-debugger",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "This library's main usage is to be used by Non-Technical testers during UAT, SIT or any testing phase.",
   "main": "index.jsx",
   "scripts": {
