@@ -54,7 +54,7 @@ export default (p) => {
       cb?.();
     }
   };
-  const hasResponse = !!p.mockDetails.response
+  const hasResponse = !!p.mockDetails?.response
 
   const reset = () => {
     if (!p.mockDetails) return;
