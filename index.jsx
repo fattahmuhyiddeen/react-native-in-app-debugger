@@ -188,7 +188,7 @@ export default ({
         >
           <View style={styles.badgeContainer}>
             {!!numMockedApiCalls && (
-              <View style={[styles.badge, { backgroundColor: "blue" }]}>
+              <View style={[styles.badge, { backgroundColor: "#77e" }]}>
                 <Text style={{ fontSize, color: "white" }}>
                   {numMockedApiCalls}
                 </Text>

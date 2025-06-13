@@ -19,9 +19,9 @@ export default (p) => {
   const save = (cb) => {
     if (tab === "response") {
       try {
-        if (!tmpResStatus) {
+        if (!tmpResStatus)
           return Alert.alert("Sorry", "Status code is required");
-        }
+
         const tmp = JSON.parse(tmpMockDetails);
         tmp.response.data = JSON.parse(tmpResBody);
         tmp.response.status = parseInt(tmpResStatus, 10);
@@ -33,7 +33,13 @@ export default (p) => {
           if (!~index) {
             const id = Date.now().toString(36) + Math.random().toString(36);
             p.setMockDetails((md) => ({ ...md, id }));
-            return [...v, { ...tmp, id }];
+            const hasOtherActivated = v.some(
+              (s) =>
+                s.active &&
+                s.request.url === tmp.request.url &&
+                s.request.method === tmp.request.method
+            );
+            return [...v, { ...tmp, id, active: !hasOtherActivated }];
           }
           v[index] = { ...v[index], ...tmp };
           p.setMockDetails(v[index]);
@@ -108,20 +114,7 @@ export default (p) => {
   // console.log('xxxxx tmpResBody', tmpResBody?.replace?.(/\s+/g, ''));
 
   return (
-    <View
-      style={{
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        position: "absolute",
-        zIndex: 1000,
-        backgroundColor: "grey",
-        width: "100%",
-        height: "100%",
-        paddingTop: 50,
-      }}
-    >
+    <View style={styles.container}>
       {!isnew && <Text style={{ opacity: 0.3 }}>{p.mockDetails.id}</Text>}
       <View style={{ flexDirection: "row" }}>
         <Text
@@ -131,16 +124,7 @@ export default (p) => {
           <X size={25} />
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          marginVertical: 10,
-          flexDirection: "row",
-          justifyContent: "space-around",
-          backgroundColor: "black",
-          borderRadius: 5,
-          padding: 5,
-        }}
-      >
+      <View style={styles.headerContainer}>
         {["request", "response", "json"].map((item) => {
           const isSelected = item === tab;
           return (
@@ -235,7 +219,7 @@ export default (p) => {
               <Text style={{ fontSize: 15 }}>Reset</Text>
             </TouchableOpacity>
           )}
-          {canReset && (
+          {(canReset || isnew) && (
             <TouchableOpacity
               style={styles.actionButton}
               onPress={() => {
@@ -268,6 +252,26 @@ export default (p) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    position: "absolute",
+    zIndex: 1000,
+    backgroundColor: "grey",
+    width: "100%",
+    height: "100%",
+    paddingTop: 50,
+  },
+  headerContainer: {
+    marginVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "black",
+    borderRadius: 5,
+    padding: 5,
+  },
   actionButton: {
     backgroundColor: "white",
     borderRadius: 5,

@@ -183,7 +183,7 @@ export default (props) => {
           const isExpand = expands[item.id];
           const bookmarkColor = props.bookmarks[item.id];
           const color = !!item.mockid
-            ? "blue"
+            ? "#77e"
             : hasResponse
             ? item.response.error
               ? "red"
@@ -216,7 +216,7 @@ export default (props) => {
                       ` (${item.response?.status ?? "no response"})` +
                       " - " +
                       item.request.time +
-                      (hasResponse ? " - " + duration + " second(s)" : "") +
+                      (!!item.mockid ? "   < mocked >" : hasResponse ? " - " + duration + " second(s)" : "") +
                       "\n"}
                   </Text>
                   <Highlight

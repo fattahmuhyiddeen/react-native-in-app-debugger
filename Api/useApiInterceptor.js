@@ -94,14 +94,10 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
   useEffect(() => {
     interceptorIds.forEach((id) => axios.interceptors.request.eject(id));
     interceptorIds = [];
-    const mocked = (url, method) => {
-      // console.log('xxxxxx url method', url, method);
-      // console.log('xxxxxx mocks', mocks);
-      return mocks.find(
+    const mocked = (url, method) => mocks.find(
         (m) =>
-          m.request.url.toLowerCase() === url.toLowerCase() && m.request.method.toLowerCase() === method.toLowerCase(),
+          m.request.url.toLowerCase() === url.toLowerCase() && m.request.method.toLowerCase() === method.toLowerCase() && m.active,
       );
-    };
     global.fetch = async function (...args) {
       // console.log('xxxxxxxx [Fetch Request]', args);
       const [url, { headers, method, body } = { method: 'get' }] = args;
