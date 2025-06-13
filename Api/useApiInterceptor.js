@@ -19,7 +19,7 @@ const parse = (data) => {
     return data;
   }
 };
-let interceptorId = null;
+let interceptorIds = [];
 export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
   const [apis, setApis] = useState([]);
   const [bookmarks, setBookmarks] = useState({});
@@ -92,6 +92,8 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
   };
 
   useEffect(() => {
+    interceptorIds.forEach((id) => axios.interceptors.request.eject(id));
+    interceptorIds = [];
     const mocked = (url, method) => {
       // console.log('xxxxxx url method', url, method);
       // console.log('xxxxxx mocks', mocks);
@@ -191,7 +193,7 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
     };
 
     // --- Intercept Axios globally ---
-    axios.interceptors.request.use(
+    interceptorIds.push(axios.interceptors.request.use(
       (config) => {
         // console.log('[Axios Request]', config);
 
@@ -223,11 +225,9 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
         });
         return Promise.reject(error);
       },
-    );
+    ));
 
-    if (interceptorId) axios.interceptors.response.eject(interceptorId);
-
-    interceptorId = axios.interceptors.response.use(
+    interceptorIds.push(axios.interceptors.response.use(
       (response) => {
         // console.log('[Axios Response]', response);
 
@@ -257,7 +257,7 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
         });
         return Promise.reject(error);
       },
-    );
+    ));
   }, [mocks]);
 
   const deleteApi = (id) => {
