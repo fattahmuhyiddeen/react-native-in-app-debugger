@@ -145,13 +145,13 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
 
         let data = "";
 
-        if (response.ok) {
-          const responseClone = response.clone();
-          data = await responseClone.text();
-          try {
-            data = JSON.parse(data);
-          } catch (e) {}
-        }
+        // if (response.ok) {
+        const responseClone = response.clone();
+        data = await responseClone.text();
+        try {
+          data = JSON.parse(data);
+        } catch (e) {}
+        // }
 
         receiveResponse({
           config: {
@@ -191,6 +191,7 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
         return new Response(JSON.stringify(error), {
           status: 400,
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(error),
         });
         // throw error;
       }
