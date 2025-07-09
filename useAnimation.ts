@@ -19,8 +19,9 @@ const defaultBorderRadius = 10;
 const und = { useNativeDriver: false };
 const touchThreshold = 10;
 
-export default (defaultBadgeHeight) => {
+export default (defaultBadgeHeight = 100) => {
   const cachePosition = useRef({ x: 0, y: 50 });
+  const [minimizedHeight, setMinimizedHeight] = useState(defaultBadgeHeight);
   const position = useRef<any>(
     new Animated.ValueXY(cachePosition.current)
   ).current;
@@ -86,18 +87,11 @@ export default (defaultBadgeHeight) => {
         position.flattenOffset();
         move({
           x: g.moveX > width / 2 ? width - defaultBadgeWidth : 0,
-          y: Math.min(g.moveY, height - defaultBadgeHeight),
+          y: Math.min(g.moveY, height - minimizedHeight),
         });
       },
     })
   ).current;
-
-  useEffect(() => {
-    Animated.spring(badgeHeight, {
-      toValue: isOpen ? height : defaultBadgeHeight,
-      ...und,
-    }).start();
-  }, [defaultBadgeHeight]);
 
   useEffect(() => {
     setTimeout(() => setShouldShowDetails(isOpen), isOpen ? 500 : 0);
@@ -108,15 +102,15 @@ export default (defaultBadgeHeight) => {
       }),
       // Animated.spring(borderRadius, { toValue: isOpen ? 0 : defaultBorderRadius, ...und }),
       Animated.spring(badgeHeight, {
-        toValue: isOpen ? height : defaultBadgeHeight,
+        toValue: isOpen ? height : minimizedHeight,
         ...und,
       }),
       Animated.spring(badgeWidth, {
-        toValue: isOpen ? width : defaultBadgeWidth,
+        toValue: isOpen ? width : minimizedHeight,
         ...und,
       }),
     ]).start();
-  }, [isOpen]);
+  }, [isOpen, minimizedHeight]);
 
   return {
     height: badgeHeight,
@@ -133,5 +127,6 @@ export default (defaultBadgeHeight) => {
     },
     borderRadius: isOpen ? 0 : defaultBorderRadius,
     shouldShowDetails,
+    setMinimizedHeight,
   };
 };

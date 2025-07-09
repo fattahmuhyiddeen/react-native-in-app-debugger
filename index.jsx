@@ -127,7 +127,6 @@ export default ({
   const numErrorApiCalls = apis.filter((a) => a.response?.error).length;
   const numPendingApiCalls = apis.filter((a) => !a.response).length;
   const numMockedApiCalls = apis.filter((a) => !!a.mockid).length;
-  let badgeHeight = fontSize * 3;
 
   const displayLabels = [
     (!!env || !!version) && (env || "") + (env ? " " : "") + version,
@@ -137,8 +136,6 @@ export default ({
     variables?.BUILD_DATE_TIME,
     ...labels,
   ].filter(Boolean);
-
-  displayLabels.forEach(() => (badgeHeight += fontSize + 1));
 
   const {
     translateX,
@@ -150,7 +147,8 @@ export default ({
     panResponder,
     setIsOpen,
     shouldShowDetails,
-  } = useAnimation(badgeHeight);
+    setMinimizedHeight,
+  } = useAnimation();
 
   const CustomTabComponent = tabs.find((t) => tab === t.title)?.component;
   const [disapear, setDisapear] = useState();
@@ -182,8 +180,9 @@ export default ({
       />
       {!shouldShowDetails ? (
         <TouchableOpacity
+          style={{ paddingBottom: 6 }}
           onPress={() => setIsOpen(true)}
-          style={styles.box}
+          onLayout={(e) => setMinimizedHeight(e.nativeEvent.layout.height)}
           activeOpacity={0.8}
         >
           <View style={styles.badgeContainer}>
@@ -215,7 +214,7 @@ export default ({
         </TouchableOpacity>
       ) : (
         <>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ width: "100%", height: "100%" }}>
             <View style={styles.labelContainer}>
               {displayLabels.map((l) => (
                 <Label key={l}>{l}</Label>
@@ -304,11 +303,6 @@ export default ({
 };
 
 const styles = StyleSheet.create({
-  box: {
-    justifyContent: "center",
-    width: "100%",
-    height: "100%",
-  },
   label: { color: "white", textAlign: "center", fontSize: fontSize + 1 },
   badgeContainer: {
     gap: 3,
