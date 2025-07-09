@@ -106,7 +106,7 @@ export default (defaultBadgeHeight = 100) => {
         ...und,
       }),
       Animated.spring(badgeWidth, {
-        toValue: isOpen ? width : minimizedHeight,
+        toValue: isOpen ? width : defaultBadgeWidth,
         ...und,
       }),
     ]).start();
