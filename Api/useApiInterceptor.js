@@ -188,11 +188,12 @@ export default ({ maxNumOfApiToStore, blacklists, blacklistRef, mocks }) => {
       } catch (error) {
         console.log("xxxxxxxxx error", error);
         // console.error('[Fetch Error]', error);
-        return new Response(JSON.stringify(error), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(error),
-        });
+        // API error should not be hanlded here
+        // return new Response(JSON.stringify(error), {
+        //   status: 400,
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify(error),
+        // });
         // throw error;
       }
     };
