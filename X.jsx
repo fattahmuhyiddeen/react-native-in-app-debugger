@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Pressable, View } from "react-native";
 
 const height = 3;
 export default ({ size = 20, color = "white", style = {}, ...rest }) => {
   const panelStyle = { top: size / 2, width: size, backgroundColor: color };
-  const Component = rest.onPress ? TouchableOpacity : View;
+  const Component = rest.onPress ? Pressable : View;
   return (
     <Component
       {...rest}

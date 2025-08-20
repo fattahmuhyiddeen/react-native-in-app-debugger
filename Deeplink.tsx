@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import {
   Linking,
-  Text,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   View,
   FlatList,
 } from "react-native";
 import X from "./X";
+import Text from "./Text";
 
 let LocalStorage;
 try {
@@ -68,12 +68,12 @@ export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
             borderRadius: 3,
           }}
         />
-        <TouchableOpacity
+        {!!text && <Pressable
           style={{ padding: 7, borderRadius: 4, backgroundColor: "white" }}
           onPress={() => go(text)}
         >
           <Text style={{ color: "black", fontSize: 9 }}>Go</Text>
-        </TouchableOpacity>
+        </Pressable>}
       </View>
       <FlatList
         data={history}
@@ -87,9 +87,9 @@ export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
               justifyContent: "flex-end",
             }}
           >
-            <TouchableOpacity onPress={() => go(item)}>
+            <Pressable onPress={() => go(item)}>
               <Text style={{ color: "white", textAlign: "right" }}>{item}</Text>
-            </TouchableOpacity>
+            </Pressable>
             <X
               style={{ marginRight: 5 }}
               size={15}

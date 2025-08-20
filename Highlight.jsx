@@ -12,11 +12,11 @@ export default ({ text, filter, style = {} }) => {
           const searchText = text.slice(i, i + filter.length);
           const seqText = !indices[ii + 1] ? text.slice(i + filter.length) : '';
           return (
-            <>
+            <React.Fragment key={i+ii}>
               {preText}
               <Text style={{ backgroundColor: 'yellow', color: 'black', ...style }}>{searchText}</Text>
               {seqText}
-            </>
+            </React.Fragment>
           );
         })}
       </>

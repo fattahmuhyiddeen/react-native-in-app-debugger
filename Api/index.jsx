@@ -5,7 +5,7 @@ import {
   View,
   Alert,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   ActivityIndicator,
 } from "react-native";
 import Text from "../Text";
@@ -61,7 +61,7 @@ export default (props) => {
     <>
       <View style={styles.container}>
         {!!apis.length && !filter && (
-          <TouchableOpacity
+          <Pressable
             style={styles.actionButton}
             onPress={() =>
               Alert.alert("Are you sure", "You want to clear all logs", [
@@ -71,10 +71,10 @@ export default (props) => {
             }
           >
             <Text style={{ color: "black", fontSize: 10 }}>Clear logs</Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
         {hasError && !filter && (
-          <TouchableOpacity
+          <Pressable
             style={{ padding: 5 }}
             onPress={() => setErrorOnly((v) => !v)}
           >
@@ -88,10 +88,10 @@ export default (props) => {
               {apis.filter(isError).length} error
               {apis.filter(isError).length > 1 ? "s" : ""}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
         {!!props.blacklists.length && !filter && (
-          <TouchableOpacity
+          <Pressable
             style={styles.actionButton}
             onPress={() =>
               Alert.alert("Are you sure", "You want to clear all blacklists", [
@@ -108,11 +108,11 @@ export default (props) => {
               Clear {props.blacklists.length}
             </Text>
             <BlacklistIcon />
-          </TouchableOpacity>
+          </Pressable>
         )}
         {!!Object.keys(props.bookmarks).length && (
           <>
-            <TouchableOpacity
+            <Pressable
               style={styles.actionButton}
               onPress={() => setShowBookmarkOnly((v) => !v)}
             >
@@ -120,8 +120,8 @@ export default (props) => {
               <Text style={{ color: "black", fontSize: 10 }}>
                 {showBookmarkOnly ? "& others" : "Only"}
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Pressable>
+            <Pressable
               style={styles.actionButton}
               onPress={() => props.setBookmarks({})}
             >
@@ -129,7 +129,7 @@ export default (props) => {
                 Clear {Object.keys(props.bookmarks).length}
               </Text>
               <Bookmark size={7} />
-            </TouchableOpacity>
+            </Pressable>
           </>
         )}
         {apis.some((a) => !a.response) && (
@@ -159,8 +159,8 @@ export default (props) => {
           .filter(
             (a) =>
               !filter ||
-              JSON.stringify(a).toLowerCase().includes(filter)
-              // if want to search url only, do this JSON.stringify(a.request.url).toLowerCase().includes(filter)
+              a.request.url.toLowerCase().includes(filter) ||
+              JSON.stringify(a.response?.data).toLowerCase().includes(filter)
           )
           .filter((a) => !showBookmarkOnly || props.bookmarks[a.id])
           .map((data) => ({ data: [data], id: data.id }))}
@@ -228,7 +228,7 @@ export default (props) => {
                 </Text>
               </View>
               <View style={{ gap: 4 }}>
-                <TouchableOpacity
+                <Pressable
                   onPress={() =>
                     setExpands((v) => {
                       if (!isExpand) return { ...v, [item.id]: true };
@@ -242,9 +242,9 @@ export default (props) => {
                   <Text style={{ color: "black", fontSize: 10 }}>
                     {isExpand ? "Hide" : "Show"}
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
                 {!!Clipboard?.setString && (
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => {
                       const content = { ...item };
                       delete content.id;
@@ -256,10 +256,10 @@ export default (props) => {
                     style={styles.actionButton}
                   >
                     <Text style={{ color: "black", fontSize: 10 }}>Copy</Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
                 {isExpand && (
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => {
                       Alert.alert(
                         "Are you sure",
@@ -284,35 +284,35 @@ export default (props) => {
                       Blacklist{" "}
                     </Text>
                     <BlacklistIcon />
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
                 {isExpand && item.interface === "axios" && !!item.mockid && (
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => props.goToMock({ ...item, id: item.mockid })}
                     style={styles.actionButton}
                   >
                     <Text style={{ color: "black", fontSize: 10 }}>
                       Edit Mock
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
                 {isExpand && item.interface === "axios" && (
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => props.goToMock(item)}
                     style={styles.actionButton}
                   >
                     <Text style={{ color: "black", fontSize: 10 }}>
                       {item.mockid ? "New " : ""}Mock
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
                 {isExpand && (
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => props.deleteApi(item.id)}
                     style={styles.actionButton}
                   >
                     <Text style={{ color: "black", fontSize: 10 }}>Delete</Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 )}
               </View>
             </View>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  TouchableHighlight,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import Text from "../Text";
@@ -14,10 +13,7 @@ export default (p) => {
   const [expand, setExpand] = useState(false);
   return (
     <View>
-      <TouchableHighlight
-        underlayColor="#ffffff44"
-        onPress={() => setExpand((v) => !v)}
-      >
+      <Pressable onPress={() => setExpand((v) => !v)}>
         <View style={styles.container}>
           <Text
             selectable
@@ -37,11 +33,11 @@ export default (p) => {
             <Text>{p.item.data.length}</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </Pressable>
       {expand &&
         p.item.data.map((d) => (
           <View style={styles.containerRow} key={d.id}>
-            <TouchableOpacity
+            <Pressable
               style={styles.radiobox}
               onPress={() => {
                 p.setMocks((v) =>
@@ -58,7 +54,7 @@ export default (p) => {
               }}
             >
               {d.active && <View style={styles.checked} />}
-            </TouchableOpacity>
+            </Pressable>
             <View style={{ flex: 1 }}>
               <Text style={{ color: "#555", fontSize: 8 }}>{d.id}</Text>
               <View
@@ -70,18 +66,18 @@ export default (p) => {
                 <Text style={{ color: "grey" }}>{d.request.datetime}</Text>
               </View>
             </View>
-            <TouchableOpacity
+            <Pressable
               style={styles.actionButton}
               onPress={() => p.deleteMock(d.id)}
             >
               <Text style={{ color: "black", fontSize: 10 }}>delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Pressable>
+            <Pressable
               style={styles.actionButton}
               onPress={() => p.setMockDetails(d)}
             >
               <Text style={{ color: "black", fontSize: 10 }}>edit</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         ))}
     </View>

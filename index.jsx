@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   Animated,
   StyleSheet,
-  TouchableOpacity,
   View,
   SafeAreaView,
+  Pressable,
   useWindowDimensions,
   FlatList,
 } from "react-native";
@@ -171,7 +171,7 @@ export default ({
       }}
       {...(isOpen ? {} : panResponder.panHandlers)}
     >
-      <Text
+      <Pressable
         accessibilityLabel={testId}
         testId={testId}
         accessible
@@ -179,11 +179,10 @@ export default ({
         style={{ height: 1, width: 1, left: 10 }}
       />
       {!shouldShowDetails ? (
-        <TouchableOpacity
+        <Pressable
           style={{ paddingBottom: 6 }}
           onPress={() => setIsOpen(true)}
           onLayout={(e) => setMinimizedHeight(e.nativeEvent.layout.height)}
-          activeOpacity={0.8}
         >
           <View style={styles.badgeContainer}>
             {!!numMockedApiCalls && (
@@ -211,7 +210,7 @@ export default ({
           {displayLabels.map((l) => (
             <Label key={l}>{l}</Label>
           ))}
-        </TouchableOpacity>
+        </Pressable>
       ) : (
         <>
           <SafeAreaView style={{ width: "100%", height: "100%" }}>
@@ -237,9 +236,8 @@ export default ({
                 renderItem={({ item, index }) => {
                   const isSelected = item === tab;
                   return (
-                    <TouchableOpacity
+                    <Pressable
                       onPress={() => setTab(item)}
-                      activeOpacity={isSelected ? 1 : 0.7}
                       style={{
                         paddingHorizontal: 8,
                         borderBottomWidth: +isSelected,
@@ -262,7 +260,7 @@ export default ({
                           <Text> ({mocks.length})</Text>
                         )}
                       </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                   );
                 }}
               />

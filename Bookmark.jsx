@@ -1,9 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 export default ({ size = 10, color = '#222', ...rest }) => {
   const tristyle = { borderRightWidth: size / 2, borderTopWidth: size / 2, borderTopColor: color };
-  const Component = rest.onPress ? TouchableOpacity : View;
+  const Component = rest.onPress ? Pressable : View;
   return (
     <Component {...rest} style={[styles.container, { height: size + size / 2 }]}>
       <View style={{ transform: [{ scale: 0.3 }] }}>

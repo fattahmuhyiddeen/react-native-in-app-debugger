@@ -10,7 +10,7 @@ Usage :
 
 ```
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, Pressable, View} from 'react-native';
 import {version} from './package.json';
 import InAppDebugger from 'react-native-in-app-debugger';
 
@@ -26,26 +26,26 @@ export default () => (
         flex: 1,
         gap: 10,
       }}>
-      <TouchableOpacity
+      <Pressable
         onPress={() => {
           fetch('https://reactnative.dev/movies.json');
         }}>
         <Text>Success</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </Pressable>
+      <Pressable
         onPress={() => {
           fetch('https://reactnative.dev/wrong-url', {
             headers: {key: 'value'},
           });
         }}>
         <Text>Error</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </Pressable>
+      <Pressable
         onPress={() => {
           fetch('https://swapi.dev/api/planets/?format=wookiee');
         }}>
         <Text>Heavy</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
     <InAppDebugger version={version} env="staging" variables={variables} labels={['branch: master']} />
   </>

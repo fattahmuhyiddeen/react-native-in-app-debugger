@@ -3,7 +3,7 @@ import {
   FlatList,
   StyleSheet,
   TextInput,
-  TouchableHighlight,
+  View,
 } from "react-native";
 import Text from "./Text";
 import Highlight from "./Highlight";
@@ -35,7 +35,7 @@ export default (p) => {
             !filter ||
             l.name.toLowerCase().includes(filter) ||
             l.version.includes(filter) ||
-            realDeps[l.name].includes(filter)
+            realDeps[l.name]?.includes(filter)
         )}
         showsVerticalScrollIndicator
         keyExtractor={(i) => i.name}
@@ -44,7 +44,7 @@ export default (p) => {
             !!realDeps[item.name] &&
             item.version.replace("^", "") !== realDeps[item.name];
           return (
-            <TouchableHighlight underlayColor="#ffffff44" onPress={() => null}>
+            <View>
               <Text selectable style={{ color: "white", marginVertical: 10 }}>
                 <Highlight text={item.name + " : "} filter={filter} />
                 <Highlight
@@ -63,7 +63,7 @@ export default (p) => {
                   />
                 )}
               </Text>
-            </TouchableHighlight>
+            </View>
           );
         }}
       />

@@ -3,7 +3,7 @@ import {
   Alert,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import Text from "../Text";
@@ -120,15 +120,15 @@ export default (p) => {
         <Text
           style={{ flex: 1 }}
         >{`(${p.mockDetails.request.method}) ${p.mockDetails.request.url}`}</Text>
-        <TouchableOpacity onPress={() => p.setMockDetails(null)}>
+        <Pressable onPress={() => p.setMockDetails(null)}>
           <X size={25} />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View style={styles.headerContainer}>
         {["request", "response", "json"].map((item) => {
           const isSelected = item === tab;
           return (
-            <TouchableOpacity
+            <Pressable
               style={{
                 backgroundColor: isSelected ? "white" : "black",
                 padding: 3,
@@ -147,7 +147,7 @@ export default (p) => {
               >
                 {item}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           );
         })}
       </View>
@@ -204,7 +204,7 @@ export default (p) => {
           }}
         >
           {!isnew && (
-            <TouchableOpacity
+            <Pressable
               style={styles.actionButton}
               onPress={() => {
                 p.deleteMock(p.mockDetails.id);
@@ -212,15 +212,15 @@ export default (p) => {
               }}
             >
               <Text style={{ fontSize: 15 }}>Delete</Text>
-            </TouchableOpacity>
+            </Pressable>
           )}
           {canReset && (
-            <TouchableOpacity style={styles.actionButton} onPress={reset}>
+            <Pressable style={styles.actionButton} onPress={reset}>
               <Text style={{ fontSize: 15 }}>Reset</Text>
-            </TouchableOpacity>
+            </Pressable>
           )}
           {(canReset || isnew) && (
-            <TouchableOpacity
+            <Pressable
               style={styles.actionButton}
               onPress={() => {
                 // try {
@@ -243,7 +243,7 @@ export default (p) => {
               }}
             >
               <Text style={{ fontSize: 15 }}>Save</Text>
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
       )}

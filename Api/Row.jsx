@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Pressable, View } from "react-native";
 import Text from "../Text";
 import Highlight from "../Highlight";
 
@@ -17,8 +17,7 @@ export default ({ item, filter, wrap, setWrap }) => {
     if (hide) return null;
     const isSelected = value === tab;
     return (
-      <TouchableOpacity
-        activeOpacity={isSelected ? 1 : 0.7}
+      <Pressable
         onPress={() => setTab(value)}
         style={[
           styles.selectionTab,
@@ -33,7 +32,7 @@ export default ({ item, filter, wrap, setWrap }) => {
         >
           {value}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
@@ -60,7 +59,7 @@ export default ({ item, filter, wrap, setWrap }) => {
           gap: 10,
         }}
       >
-        <TouchableOpacity
+        <Pressable
           onPress={() => setWrap((v) => !v)}
           style={{
             borderWidth: 2,
@@ -73,7 +72,7 @@ export default ({ item, filter, wrap, setWrap }) => {
           <Text style={{ color: wrap ? undefined : "white", fontSize: 10 }}>
             Wrap
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <Comp horizontal>
         {tab === tabs[0].value && hasResponse && (
