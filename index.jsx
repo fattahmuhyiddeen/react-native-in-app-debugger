@@ -3,7 +3,6 @@ import {
   Animated,
   StyleSheet,
   View,
-  SafeAreaView,
   Pressable,
   useWindowDimensions,
   FlatList,
@@ -12,6 +11,7 @@ import Deeplink from "./Deeplink";
 import Text from "./Text";
 import X from "./X";
 const testId = "react-native-in-app-debugger-close-button";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 let DeviceInfo;
 try {
@@ -213,7 +213,7 @@ export default ({
         </Pressable>
       ) : (
         <>
-          <SafeAreaView style={{ width: "100%", height: "100%" }}>
+          <SafeAreaView style={{ width: "100%", height: "100%" }} edges={['top']}>
             <View style={styles.labelContainer}>
               {displayLabels.map((l) => (
                 <Label key={l}>{l}</Label>
