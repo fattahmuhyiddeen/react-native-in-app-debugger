@@ -8,6 +8,7 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from "../Text";
 import Highlight from "../Highlight";
 import Bookmark from "../Bookmark";
@@ -45,6 +46,7 @@ export default (props) => {
   const [wrap, setWrap] = useState(true);
   const [expands, setExpands] = useState({});
   const apis = props.apis.filter((a) => !errorOnly || isError(a));
+  const insets = useSafeAreaInsets();
 
   if (LocalStorage) {
     useEffect(() => {
@@ -155,6 +157,7 @@ export default (props) => {
         keyExtractor={(i) => i.id}
         stickySectionHeadersEnabled
         showsVerticalScrollIndicator
+        contentContainerStyle={{ paddingBottom: insets.bottom}}
         sections={apis
           .filter(
             (a) =>

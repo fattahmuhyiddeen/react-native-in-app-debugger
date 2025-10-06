@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { FlatList, StyleSheet, TextInput } from "react-native";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from "./Text";
 import Highlight from "./Highlight";
 
 export default ({ variables }) => {
   const [filter, setFilter] = useState("");
+  const insets = useSafeAreaInsets();
 
   return (
     <>
@@ -17,7 +19,7 @@ export default ({ variables }) => {
         clearButtonMode="always"
       />
       <FlatList
-        contentContainerStyle={{ padding: 5, paddingBottom: 20 }}
+        contentContainerStyle={{ padding: 5, paddingBottom: insets.bottom }}
         data={Object.keys(variables).filter(
           (k) =>
             !filter ||

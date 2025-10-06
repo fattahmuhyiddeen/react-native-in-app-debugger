@@ -6,6 +6,7 @@ import {
   View,
   FlatList,
 } from "react-native";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import X from "./X";
 import Text from "./Text";
 
@@ -20,6 +21,7 @@ try {
 export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
   const [text, setText] = React.useState("");
   const [history, setHistory] = React.useState([]);
+  const insets = useSafeAreaInsets();
 
   const go = (t) => {
     const newHistory = [t, ...history.filter((h) => h !== t)];
@@ -77,6 +79,7 @@ export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
       </View>
       <FlatList
         data={history}
+        contentContainerStyle={{ paddingBottom: insets.bottom }}
         renderItem={({ item }) => (
           <View
             style={{

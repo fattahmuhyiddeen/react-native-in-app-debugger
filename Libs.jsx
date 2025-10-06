@@ -5,6 +5,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Text from "./Text";
 import Highlight from "./Highlight";
 import packageJson from "../../package.json";
@@ -17,6 +18,7 @@ const libs = Object.entries(packageJson.dependencies).reduce(
 
 export default (p) => {
   const [filter, setFilter] = useState("");
+  const insets = useSafeAreaInsets();
 
   return (
     <>
@@ -29,7 +31,7 @@ export default (p) => {
         clearButtonMode="always"
       />
       <FlatList
-        contentContainerStyle={{ padding: 5, paddingBottom: 20 }}
+        contentContainerStyle={{ padding: 5, paddingBottom: insets.bottom }}
         data={libs.filter(
           (l) =>
             !filter ||

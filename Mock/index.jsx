@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInput } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MockGroup from './MockGroup';
 
 const format = (m) => '(' + m.request.method + ') ' + m.request.url;
 
 export default (p) => {
   const [filter, setFilter] = useState('');
+  const insets = useSafeAreaInsets();
 
   const data = [];
   p.mocks.forEach((m) => {
@@ -25,7 +27,7 @@ export default (p) => {
         clearButtonMode='always'
       />
       <FlatList
-        contentContainerStyle={{ padding: 5, paddingBottom: 20 }}
+        contentContainerStyle={{ padding: 5, paddingBottom: insets.bottom }}
         data={data.filter((l) => !filter || l.title.toLowerCase().includes(filter))}
         showsVerticalScrollIndicator
         keyExtractor={(i) => i.title}
