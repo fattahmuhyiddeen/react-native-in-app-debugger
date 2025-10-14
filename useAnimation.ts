@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Keyboard,
@@ -69,29 +69,35 @@ export default (defaultBadgeHeight = 100) => {
     };
   }, [isOpen]);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => false,
-      onMoveShouldSetPanResponder: (_, gestureState) => {
-        const { dx, dy } = gestureState;
-        return Math.abs(dx) > touchThreshold || Math.abs(dy) > touchThreshold;
-      },
-      onPanResponderGrant: () => {
-        position.setOffset({ x: position.x._value, y: position.y._value });
-      },
-      onPanResponderMove: Animated.event(
-        [null, { dx: position.x, dy: position.y }],
-        und
-      ),
-      onPanResponderRelease: (_, g) => {
-        position.flattenOffset();
-        move({
-          x: g.moveX > width / 2 ? width - defaultBadgeWidth : 0,
-          y: Math.min(g.moveY, height - minimizedHeight),
-        });
-      },
-    })
-  ).current;
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => false,
+        onMoveShouldSetPanResponder: (_: any, gestureState: any) => {
+          const { dx, dy } = gestureState;
+          return Math.abs(dx) > touchThreshold || Math.abs(dy) > touchThreshold;
+        },
+        onPanResponderGrant: () => {
+          position.setOffset({ x: position.x._value, y: position.y._value });
+        },
+        onPanResponderMove: Animated.event(
+          [null, { dx: position.x, dy: position.y }],
+          und
+        ),
+        onPanResponderRelease: (_, g) => {
+          position.flattenOffset();
+          move({
+            x: g.moveX > width / 2 ? width - defaultBadgeWidth : 0,
+            y: Math.min(g.moveY, height - minimizedHeight),
+          });
+        },
+      }),
+    [width]
+  );
+
+  useEffect(() => {
+    move({ x: 0, y: 100 });
+  }, [width]);
 
   useEffect(() => {
     setTimeout(() => setShouldShowDetails(isOpen), isOpen ? 500 : 0);
