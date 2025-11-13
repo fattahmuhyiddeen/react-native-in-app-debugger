@@ -69,7 +69,7 @@ export default ({ item, filter, wrap, setWrap }) => {
             borderRadius: 10,
           }}
         >
-          <Text style={{ color: wrap ? undefined : "white", fontSize: 10 }}>
+          <Text style={{ color: wrap ? "black" : "white", fontSize: 10 }}>
             Wrap
           </Text>
         </Pressable>
