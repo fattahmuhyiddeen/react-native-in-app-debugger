@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Keyboard,
+  BackHandler,
   PanResponder,
   useWindowDimensions,
 } from "react-native";
@@ -46,6 +47,19 @@ export default (defaultBadgeHeight = 100) => {
       });
     }, []);
   }
+
+
+    useEffect(()=>{
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        () => {
+          setIsOpen(false);
+          return isOpen;
+        },
+      );
+
+      return () => backHandler.remove();
+    },[isOpen])
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
