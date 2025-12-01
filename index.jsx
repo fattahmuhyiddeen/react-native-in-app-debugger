@@ -239,7 +239,8 @@ export default ({
                     <Pressable
                       onPress={() => setTab(item)}
                       style={{
-                        paddingHorizontal: 8,
+                        paddingHorizontal: 16,
+                        paddingVertical: 8,
                         borderBottomWidth: +isSelected,
                         borderColor: "white",
                       }}
