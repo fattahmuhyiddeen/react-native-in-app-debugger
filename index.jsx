@@ -265,7 +265,7 @@ export default ({
                   );
                 }}
               />
-              <X style={{ marginRight: 5 }} onPress={() => setIsOpen(false)} />
+              <X style={{ paddingTop:3, marginRight:10 }} onPress={() => setIsOpen(false)} />
             </View>
             {tab === "vars" && <Variables variables={variables} />}
             {tab === "mock" && (
