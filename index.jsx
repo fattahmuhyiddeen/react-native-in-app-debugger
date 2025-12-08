@@ -208,7 +208,7 @@ export default ({
             )}
           </View>
           {displayLabels.map((l) => (
-            <Label key={l}>{l}</Label>
+            <Label selectable={false} key={l}>{l}</Label>
           ))}
         </Pressable>
       ) : (
