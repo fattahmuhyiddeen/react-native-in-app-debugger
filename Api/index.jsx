@@ -53,7 +53,7 @@ export default (props) => {
       LocalStorage.getItem("in-app-debugger-api-filter").then(setFilter);
     }, []);
     useEffect(() => {
-      LocalStorage.setItem("in-app-debugger-api-filter", filter);
+      (filter == '' || !!filter) && LocalStorage.setItem("in-app-debugger-api-filter", filter);
     }, [filter]);
   }
 
