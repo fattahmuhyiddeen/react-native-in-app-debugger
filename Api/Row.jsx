@@ -28,6 +28,7 @@ export default ({ item, filter, wrap, setWrap }) => {
           style={{
             color: isSelected ? "#000" : "#ffffff88",
             textAlign: "center",
+            fontSize: 16
           }}
         >
           {value}
@@ -69,7 +70,7 @@ export default ({ item, filter, wrap, setWrap }) => {
             borderRadius: 10,
           }}
         >
-          <Text style={{ color: wrap ? "black" : "white", fontSize: 10 }}>
+          <Text style={{ color: wrap ? "black" : "white", fontSize: 14 }}>
             Wrap
           </Text>
         </Pressable>

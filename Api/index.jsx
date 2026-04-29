@@ -72,7 +72,7 @@ export default (props) => {
               ])
             }
           >
-            <Text style={{ color: "black", fontSize: 10 }}>Clear logs</Text>
+            <Text style={styles.buttonLabel}>Clear logs</Text>
           </Pressable>
         )}
         {hasError && !filter && (
@@ -157,7 +157,7 @@ export default (props) => {
         keyExtractor={(i) => i.id}
         stickySectionHeadersEnabled
         showsVerticalScrollIndicator
-        contentContainerStyle={{ paddingBottom: insets.bottom}}
+        contentContainerStyle={{ paddingBottom: insets.bottom }}
         sections={apis
           .filter(
             (a) =>
@@ -189,10 +189,10 @@ export default (props) => {
           const color = !!item.mockid
             ? "#77e"
             : hasResponse
-            ? item.response.error
-              ? "red"
-              : "white"
-            : "yellow";
+              ? item.response.error
+                ? "red"
+                : "white"
+              : "yellow";
 
           return (
             <View style={styles.rowHeader}>
@@ -242,7 +242,7 @@ export default (props) => {
                   }
                   style={styles.actionButton}
                 >
-                  <Text style={{ color: "black", fontSize: 10 }}>
+                  <Text style={styles.buttonLabel}>
                     {isExpand ? "Hide" : "Show"}
                   </Text>
                 </Pressable>
@@ -258,7 +258,7 @@ export default (props) => {
                     }}
                     style={styles.actionButton}
                   >
-                    <Text style={{ color: "black", fontSize: 10 }}>Copy</Text>
+                    <Text style={styles.buttonLabel}>Copy</Text>
                   </Pressable>
                 )}
                 {isExpand && (
@@ -283,9 +283,7 @@ export default (props) => {
                     }}
                     style={styles.actionButton}
                   >
-                    <Text style={{ color: "black", fontSize: 10 }}>
-                      Blacklist{" "}
-                    </Text>
+                    <Text style={styles.buttonLabel}>Blacklist</Text>
                     <BlacklistIcon />
                   </Pressable>
                 )}
@@ -294,7 +292,7 @@ export default (props) => {
                     onPress={() => props.goToMock({ ...item, id: item.mockid })}
                     style={styles.actionButton}
                   >
-                    <Text style={{ color: "black", fontSize: 10 }}>
+                    <Text style={styles.buttonLabel}>
                       Edit Mock
                     </Text>
                   </Pressable>
@@ -304,7 +302,7 @@ export default (props) => {
                     onPress={() => props.goToMock(item)}
                     style={styles.actionButton}
                   >
-                    <Text style={{ color: "black", fontSize: 10 }}>
+                    <Text style={styles.buttonLabel}>
                       {item.mockid ? "New " : ""}Mock
                     </Text>
                   </Pressable>
@@ -314,7 +312,7 @@ export default (props) => {
                     onPress={() => props.deleteApi(item.id)}
                     style={styles.actionButton}
                   >
-                    <Text style={{ color: "black", fontSize: 10 }}>Delete</Text>
+                    <Text style={styles.buttonLabel}>Delete</Text>
                   </Pressable>
                 )}
               </View>
@@ -334,6 +332,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
   },
+  buttonLabel: { color: "black", fontSize: 14 },
   actionButton: {
     backgroundColor: "white",
     borderRadius: 5,

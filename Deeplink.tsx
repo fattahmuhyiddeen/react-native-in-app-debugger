@@ -55,7 +55,7 @@ export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
   return (
     <View style={{ marginBottom: 10 }}>
       <View style={{ flexDirection: "row", alignItems: "center", margin: 10 }}>
-        <Text style={{ color: "white" }}>{deeplinkPrefix}</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>{deeplinkPrefix}</Text>
         <TextInput
           value={text}
           autoCapitalize="none"
@@ -68,13 +68,15 @@ export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
             marginRight: 10,
             padding: 3,
             borderRadius: 3,
+            fontSize: 16,
+            color: 'white'
           }}
         />
         {!!text && <Pressable
           style={{ padding: 7, borderRadius: 4, backgroundColor: "white" }}
           onPress={() => go(text)}
         >
-          <Text style={{ color: "black", fontSize: 9 }}>Go</Text>
+          <Text style={{ color: "black", fontSize: 14 }}>Go</Text>
         </Pressable>}
       </View>
       <FlatList
@@ -91,7 +93,7 @@ export default ({ deeplinkPrefix = 'mym1-sunshine://', onClose }) => {
             }}
           >
             <Pressable onPress={() => go(item)}>
-              <Text style={{ color: "white", textAlign: "right" }}>{item}</Text>
+              <Text style={{ color: "white", textAlign: "right", fontSize: 16 }}>{item}</Text>
             </Pressable>
             <X
               style={{ marginRight: 5 }}
