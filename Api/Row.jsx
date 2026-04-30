@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, Pressable, View, TouchableOpacity, Alert } from "react-native";
+import { ScrollView, StyleSheet, Pressable, View, Alert } from "react-native";
 import Clipboard from "@react-native-clipboard/clipboard"
 import Text from "../Text";
 import Highlight from "../Highlight";
@@ -12,7 +12,6 @@ export default ({ item, filter, wrap, setWrap }) => {
     "Response Body",
     item.request.data ? "Request Body" : '',
     "Request Header",
-    "Curl",
   ];
   const [tab, setTab] = useState(tabs[0]);
   const hasResponse = item.response;
@@ -60,10 +59,10 @@ export default ({ item, filter, wrap, setWrap }) => {
         {tabs.map((t) => <Tab key={t} value={t} />)}
       </View>
       <View style={styles.containerForMiniActionButton}>
-        {tab === tabs[3] && <TouchableOpacity style={[styles.button, { backgroundColor: 'white' }]} onPress={() => {
+        <Pressable style={[styles.button, { backgroundColor: 'white' }]} onPress={() => {
           Clipboard.setString(generateCurl());
-          Alert.alert("Copied","curl command");
-        }}><Text>Copy</Text></TouchableOpacity>}
+          Alert.alert("Copied", "curl command");
+        }}><Text>Copy curl</Text></Pressable>
         <Pressable
           onPress={() => setWrap((v) => !v)}
           style={[styles.button, wrap && { backgroundColor: 'white' }]}
@@ -75,13 +74,11 @@ export default ({ item, filter, wrap, setWrap }) => {
       </View>
       <Comp horizontal>
         <Text style={{ color: "white" }}>
-          {tab === tabs[3] ? generateCurl() :
-            <Highlight
-              text={JSON.stringify(tab === tabs[0] && hasResponse ? item.response.data :
-                tab === tabs[1] ? item.request.data : tab === tabs[2] ? item.request.headers : '', undefined, 4)}
-              filter={filter}
-            />
-          }
+          <Highlight
+            text={JSON.stringify(tab === tabs[0] && hasResponse ? item.response.data :
+              tab === tabs[1] ? item.request.data : tab === tabs[2] ? item.request.headers : '', undefined, 4)}
+            filter={filter}
+          />
         </Text>
 
       </Comp>
