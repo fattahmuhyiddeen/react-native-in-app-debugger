@@ -15,20 +15,8 @@ import Bookmark from "../Bookmark";
 import X from "../X";
 import getRandomBrightColor from "../utils/getRandomBrightColor";
 import { MAX_URL_LENGTH } from "./Row";
-let Clipboard;
-try {
-  Clipboard = require("@react-native-clipboard/clipboard").default;
-} catch (error) {
-  // console.error("Error importing Clipboard:", error);
-}
-
-let LocalStorage;
-try {
-  LocalStorage =
-    require("@react-native-async-storage/async-storage/src").default;
-} catch (error) {
-  // console.error("Error importing LocalStorage:", error);
-}
+import Clipboard from "@react-native-clipboard/clipboard"
+import LocalStorage from "@react-native-async-storage/async-storage/src";
 
 import Row from "./Row";
 

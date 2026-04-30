@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, Pressable, View } from "react-native";
+import { ScrollView, StyleSheet, Pressable, View, TouchableOpacity, Alert } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard"
 import Text from "../Text";
 import Highlight from "../Highlight";
+import { toCurl } from "./toCurl";
 
 export const MAX_URL_LENGTH = 100;
 
 export default ({ item, filter, wrap, setWrap }) => {
   const tabs = [
-    { value: "Response Body" },
-    { value: "Request Body", hide: !item.request.data },
-    { value: "Request Header" },
+    "Response Body",
+    item.request.data ? "Request Body" : '',
+    "Request Header",
+    "Curl",
   ];
-  const [tab, setTab] = useState(tabs[0].value);
+  const [tab, setTab] = useState(tabs[0]);
   const hasResponse = item.response;
-  const Tab = ({ value, hide }) => {
-    if (hide) return null;
+  const Tab = ({ value }) => {
+    if (!value) return null;
     const isSelected = value === tab;
     return (
       <Pressable
@@ -39,6 +42,13 @@ export default ({ item, filter, wrap, setWrap }) => {
 
   const Comp = wrap ? View : ScrollView;
 
+  const generateCurl = () => toCurl({
+    method: item.request.method,
+    url: item.request.url,
+    headers: item.request.headers,
+    body: item.request.data,
+  })
+
   return (
     <View style={styles.container}>
       {item.request.url.length > MAX_URL_LENGTH && (
@@ -47,28 +57,16 @@ export default ({ item, filter, wrap, setWrap }) => {
         </Text>
       )}
       <View style={{ flexDirection: "row" }}>
-        {tabs.map((t) => (
-          <Tab key={t.value} {...t} />
-        ))}
+        {tabs.map((t) => <Tab key={t} value={t} />)}
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          padding: 10,
-          gap: 10,
-        }}
-      >
+      <View style={styles.containerForMiniActionButton}>
+        {tab === tabs[3] && <TouchableOpacity style={[styles.button, { backgroundColor: 'white' }]} onPress={() => {
+          Clipboard.setString(generateCurl());
+          Alert.alert("Copied","curl command");
+        }}><Text>Copy</Text></TouchableOpacity>}
         <Pressable
           onPress={() => setWrap((v) => !v)}
-          style={{
-            borderWidth: 2,
-            backgroundColor: wrap ? "white" : undefined,
-            borderColor: "white",
-            padding: 5,
-            borderRadius: 10,
-          }}
+          style={[styles.button, wrap && { backgroundColor: 'white' }]}
         >
           <Text style={{ color: wrap ? "black" : "white", fontSize: 14 }}>
             Wrap
@@ -76,30 +74,16 @@ export default ({ item, filter, wrap, setWrap }) => {
         </Pressable>
       </View>
       <Comp horizontal>
-        {tab === tabs[0].value && hasResponse && (
-          <Text style={{ color: "white" }}>
+        <Text style={{ color: "white" }}>
+          {tab === tabs[3] ? generateCurl() :
             <Highlight
-              text={JSON.stringify(item.response.data, undefined, 4)}
+              text={JSON.stringify(tab === tabs[0] && hasResponse ? item.response.data :
+                tab === tabs[1] ? item.request.data : tab === tabs[2] ? item.request.headers : '', undefined, 4)}
               filter={filter}
             />
-          </Text>
-        )}
-        {tab === tabs[1].value && (
-          <Text style={{ color: "white" }}>
-            <Highlight
-              text={JSON.stringify(item.request.data, undefined, 4)}
-              filter={filter}
-            />
-          </Text>
-        )}
-        {tab === tabs[2].value && (
-          <Text style={{ color: "white" }}>
-            <Highlight
-              text={JSON.stringify(item.request.headers, undefined, 4)}
-              filter={filter}
-            />
-          </Text>
-        )}
+          }
+        </Text>
+
       </Comp>
     </View>
   );
@@ -111,6 +95,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#171717",
     paddingTop: 10,
     paddingBottom: 40,
+  },
+  button: {
+    borderWidth: 2,
+    borderColor: "white",
+    padding: 5,
+    borderRadius: 10
+  },
+  containerForMiniActionButton: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    padding: 10,
+    gap: 10,
   },
   selectionTab: {
     borderBottomColor: "white",
